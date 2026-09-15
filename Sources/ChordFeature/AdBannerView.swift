@@ -70,38 +70,6 @@ public struct AdBannerView: View {
     }
 }
 
-/// 크리에이티브가 슬롯보다 작을 때 SDK가 남는 자리를 검게 칠한다.
-///
-/// 로드 시점에 한 번 지워도 레이아웃이 다시 돌면 되살아나므로, 레이아웃마다 지운다.
-private final class ClearBackgroundBannerView: BannerView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        clearBackground(of: self)
-    }
-
-    /// 검게 칠해진 배경만 골라 지운다. 광고 자체가 쓰는 색은 건드리지 않는다.
-    private func clearBackground(of view: UIView, depth: Int = 0) {
-        if isBlack(view.backgroundColor) || isBlack(view.layer.backgroundColor.map(UIColor.init(cgColor:))) {
-            view.backgroundColor = .clear
-            view.layer.backgroundColor = nil
-            view.isOpaque = false
-        }
-        // 광고 내용까지 헤집지 않도록 몇 단계만 훑는다.
-        guard depth < 3 else { return }
-        for subview in view.subviews {
-            clearBackground(of: subview, depth: depth + 1)
-        }
-    }
-
-    private func isBlack(_ color: UIColor?) -> Bool {
-        guard let color else { return false }
-        var white: CGFloat = 0
-        var alpha: CGFloat = 0
-        guard color.getWhite(&white, alpha: &alpha) else { return false }
-        return white == 0 && alpha > 0
-    }
-}
-
 private struct BannerRepresentable: UIViewRepresentable {
     let adUnitID: String
     let adSize: AdSize
@@ -114,7 +82,7 @@ private struct BannerRepresentable: UIViewRepresentable {
 
     func makeUIView(context: Context) -> BannerView {
         context.coordinator.requestedSize = adSize.size
-        let banner = ClearBackgroundBannerView(adSize: adSize)
+        let banner = BannerView(adSize: adSize)
         banner.adUnitID = adUnitID
         banner.rootViewController = rootViewController
         banner.delegate = context.coordinator
