@@ -13,13 +13,20 @@ public struct ChordFinderFeature: Sendable {
         public var inversion: Int
         public var octave: Int
         public var style: PlaybackStyle
+        /// 이미 열어 둔 분류. 3화음과 처음 띄운 분류는 그냥 볼 수 있다.
+        public var unlockedCategories: Set<ChordQuality.Category>
+        /// true면 잠긴 분류를 열 때 전면 광고를 먼저 보여 준다.
+        public var requiresAdForLockedCategories: Bool
+        /// 광고를 띄우고 닫히기를 기다리는 중.
+        public var isWaitingForAd: Bool
 
         public init(
             root: PitchClass = .c,
             quality: ChordQuality = .major,
             inversion: Int = 0,
             octave: Int = 4,
-            style: PlaybackStyle = .block
+            style: PlaybackStyle = .block,
+            requiresAdForLockedCategories: Bool = AdMob.showsInterstitialForLockedCategories
         ) {
             self.root = root
             self.quality = quality
@@ -27,6 +34,19 @@ public struct ChordFinderFeature: Sendable {
             self.inversion = inversion
             self.octave = octave
             self.style = style
+            unlockedCategories = [.triad, quality.category]
+            self.requiresAdForLockedCategories = requiresAdForLockedCategories
+            isWaitingForAd = false
+        }
+
+        /// 그냥 열 수 있는 분류인지.
+        public func isUnlocked(_ category: ChordQuality.Category) -> Bool {
+            !requiresAdForLockedCategories || unlockedCategories.contains(category)
+        }
+
+        /// 아직 광고를 봐야 하는 분류.
+        public var lockedCategories: [ChordQuality.Category] {
+            ChordQuality.Category.allCases.filter { !isUnlocked($0) }
         }
 
         public var chord: Chord { Chord(root: root, quality: quality) }
@@ -55,9 +75,13 @@ public struct ChordFinderFeature: Sendable {
         case octaveStepped(Int)
         case playButtonTapped
         case keyTapped(Int)
+        case viewAppeared
+        /// 전면 광고가 닫혔다. 끝까지 봤으면 그 분류를 열어 준다.
+        case interstitialFinished(category: ChordQuality.Category, watched: Bool)
     }
 
     @Dependency(\.audioPlayer) var audioPlayer
+    @Dependency(\.interstitialAd) var interstitialAd
 
     public init() {}
 
@@ -71,37 +95,51 @@ public struct ChordFinderFeature: Sendable {
 
             case let .rootTapped(root):
                 state.root = root
-                return play(state)
+                return .none
 
             case let .categoryTapped(category):
                 guard state.category != category else { return .none }
-                state.category = category
-                // 분류를 바꾸면 그 분류의 첫 코드로 옮겨 간다.
-                if let first = ChordQuality.all(in: category).first, first != state.quality {
-                    state.quality = first
-                    state.clampInversion()
-                    return play(state)
+                guard state.isUnlocked(category) else {
+                    // 잠긴 분류는 광고를 끝까지 본 뒤에 열린다.
+                    state.isWaitingForAd = true
+                    return .run { send in
+                        let watched = await interstitialAd.show()
+                        await send(.interstitialFinished(category: category, watched: watched))
+                    }
                 }
+                state.open(category)
+                return .none
+
+            case let .interstitialFinished(category, watched):
+                state.isWaitingForAd = false
+                guard watched else { return .none }
+                state.unlockedCategories.insert(category)
+                state.open(category)
                 return .none
 
             case let .qualityTapped(quality):
                 state.quality = quality
                 state.clampInversion()
-                return play(state)
+                return .none
 
             case let .inversionTapped(inversion):
                 state.inversion = inversion
-                return play(state)
+                return .none
 
             case let .octaveStepped(delta):
                 state.octave = max(2, min(6, state.octave + delta))
-                return play(state)
+                return .none
 
             case .playButtonTapped:
                 return play(state)
 
             case let .keyTapped(note):
                 return .run { _ in await audioPlayer.play(note: note) }
+
+            case .viewAppeared:
+                // 잠긴 분류를 누르는 순간 기다리지 않도록 미리 받아 둔다.
+                guard state.requiresAdForLockedCategories else { return .none }
+                return .run { _ in await interstitialAd.prepare() }
             }
         }
     }
@@ -114,6 +152,14 @@ public struct ChordFinderFeature: Sendable {
 }
 
 private extension ChordFinderFeature.State {
+    /// 분류를 바꾸고 그 분류의 첫 코드로 옮겨 간다.
+    mutating func open(_ category: ChordQuality.Category) {
+        self.category = category
+        guard let first = ChordQuality.all(in: category).first, first != quality else { return }
+        quality = first
+        clampInversion()
+    }
+
     /// 코드가 바뀌어 전위 수가 줄면 범위 안으로 되돌린다.
     mutating func clampInversion() {
         inversion = min(inversion, chord.inversionCount - 1)

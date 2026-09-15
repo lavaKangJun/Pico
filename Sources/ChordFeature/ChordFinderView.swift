@@ -25,6 +25,7 @@ public struct ChordFinderView: View {
         .background(Theme.groupedBackground)
         .navigationTitle(store.symbol)
         .navigationBarTitleDisplayMode(.inline)
+        .task { store.send(.viewAppeared) }
     }
 
     // MARK: - 최상단 루트 스트립
@@ -224,6 +225,21 @@ public struct ChordFinderView: View {
                 Text("분류", bundle: .chordFeature)
             }
             .pickerStyle(.segmented)
+            .disabled(store.isWaitingForAd)
+
+            // 세그먼트 컨트롤은 라벨에 아이콘을 못 넣으므로 아래에 따로 알린다.
+            if !store.lockedCategories.isEmpty {
+                Label {
+                    Text(
+                        "광고를 보면 \(store.lockedCategories.map(\.displayName).joined(separator: ", ")) 분류를 열 수 있어요.",
+                        bundle: .chordFeature
+                    )
+                } icon: {
+                    Image(systemName: "lock.fill")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 8) {
                 ForEach(store.qualities) { quality in

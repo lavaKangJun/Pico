@@ -11,7 +11,11 @@
   전위·옥타브 조절, 동시에/아르페지오 재생, 건반 개별 타건 지원.
 - **코드 진행** — 팝 진행, 캐논, 투 파이브 원, 12마디 블루스 등 9가지 진행을 원하는 조로 옮겨 듣는다. BPM 조절과 한 코드씩 순차 재생.
 
-소리는 사운드폰트 없이 `AVAudioEngine` 위에서 배음을 쌓아 만든다. (`ChordSynthesizer`)
+소리는 Play 버튼을 눌렀을 때만 난다. 루트나 코드를 고르는 중에는 울리지 않는다.
+사운드폰트 없이 `AVAudioEngine` 위에서 배음을 쌓아 만든다. (`ChordSynthesizer`)
+
+6화음·7화음·텐션 분류는 전면 광고를 한 번 보면 열린다.
+`AdMob.showsInterstitialForLockedCategories`로 끌 수 있다.
 
 ## 광고
 
@@ -19,7 +23,7 @@
 창 너비에 맞춘 앵커드 어댑티브 배너이고, 광고를 못 받으면 자리를 접어 빈 카드를 남기지 않는다.
 
 > **배포 전에 할 것**
-> 1. `Sources/ChordFeature/AdBannerView.swift`의 `AdMob.bannerAdUnitID` 교체
+> 1. `AdMob.bannerAdUnitID`와 `AdMob.interstitialAdUnitID` 교체
 > 2. `Project.swift`의 `GADApplicationIdentifier` 교체
 > 3. `Project.swift`의 `SKAdNetworkItems`를 구글 문서의 전체 목록으로
 > 4. 개발자 웹사이트 루트에 `app-ads.txt` 게시 — 광고 단위 ID 도용으로 생기는

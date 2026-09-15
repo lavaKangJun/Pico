@@ -11,6 +11,13 @@ public enum AdMob {
     ///   같이 바꿔야 한다.
     public static let bannerAdUnitID = "ca-app-pub-3940256099942544/2934735716"
 
+    /// 전면 광고 단위 ID. 이것도 구글 테스트 단위다.
+    public static let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910"
+
+    /// true면 6화음·7화음·텐션을 처음 열 때 전면 광고를 먼저 보여 준다.
+    /// 끄고 싶으면 false로 두면 잠금 자체가 사라진다.
+    public static let showsInterstitialForLockedCategories = true
+
     /// 앱을 켤 때 한 번 호출한다. 초기화 전에 요청한 광고는 로드되지 않는다.
     @MainActor
     public static func start() {

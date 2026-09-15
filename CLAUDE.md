@@ -166,7 +166,9 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 
 ## 광고
 
-코드 찾기 화면의 코드 카드 바로 아래에 AdMob 배너가 들어간다 (`AdBannerView`).
+배너와 전면 광고 둘 다 쓴다.
+
+**배너** — 코드 찾기 화면의 코드 카드 바로 아래 (`AdBannerView`).
 배너 크기에 맞춘 사각형이고 모서리를 둥글리지 않는다. 광고를 못 받으면 자리를 접는다.
 
 배너 배경이나 SDK 내부 뷰 계층은 건드리지 않는다. 크리에이티브가 슬롯보다 작을 때 생기는
@@ -176,11 +178,19 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 내려온 크기로 바뀌어서, 비교할 때마다 "요청과 다르다 → 재요청"이 무한히 반복된다.
 요청한 크기는 코디네이터가 따로 들고 있다.
 
+**전면 광고** — 6화음·7화음·텐션 분류를 처음 열 때 (`InterstitialAdClient`).
+한 번 본 분류는 그 화면이 살아 있는 동안 계속 열려 있다.
+`AdMob.showsInterstitialForLockedCategories`를 false로 두면 잠금 자체가 사라진다.
+
+전면 광고를 띄우는 `InterstitialPresenter`는 `@MainActor`다. 의존성의 `liveValue` 초기화는
+메인 액터가 아닌 곳에서 도니, 거기서 인스턴스를 만들면 실행 즉시 크래시한다.
+클로저 안에서 `.shared`로 처음 접근할 때 만들어지게 해 뒀다.
+
 ### 배포 체크리스트
 
 지금 들어 있는 ID는 전부 구글이 공개한 테스트 값이다. 실제 배포 전에:
 
-1. `AdMob.bannerAdUnitID`를 AdMob 콘솔에서 발급받은 배너 단위 ID로
+1. `AdMob.bannerAdUnitID`와 `AdMob.interstitialAdUnitID`를 실제 광고 단위 ID로
 2. `Project.swift`의 `GADApplicationIdentifier`를 실제 앱 ID로
 3. `Project.swift`의 `SKAdNetworkItems`를 구글 문서의 전체 목록으로
 4. 개발자 웹사이트 루트에 `app-ads.txt`를 올리고 AdMob 콘솔에서 인식 확인
