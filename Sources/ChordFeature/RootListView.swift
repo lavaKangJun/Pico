@@ -41,10 +41,10 @@ public struct RootListView: View {
             Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
                 .font(.system(.title3, design: .rounded).weight(.bold))
                 .foregroundStyle(pitch.isAccidental ? Color.white : Theme.accent)
-                .frame(width: 46, height: 46)
+                .frame(width: 40, height: 40)
                 .background(
                     pitch.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
-                    in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )
 
             VStack(alignment: .leading, spacing: 2) {
@@ -62,7 +62,11 @@ public struct RootListView: View {
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.tertiary)
         }
-        .cardStyle()
+        // cardStyle()의 16pt 대신 위아래만 좁혀 셀 높이를 낮춘다.
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
     }
 }
 
