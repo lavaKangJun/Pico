@@ -14,7 +14,7 @@
 
 ## 언어
 
-한국어로 쓰고 영어·일본어·중국어(간체)를 지원한다. 번역은 모듈마다 자기 String Catalog을
+한국어로 쓰고 영어·일본어·중국어(간체/번체)를 지원한다. 번역은 모듈마다 자기 String Catalog을
 들고 다니고(`Sources/<모듈>/Resources/Localizable.xcstrings`), 키는 한국어 원문을 그대로 쓴다.
 
 SwiftUI의 `Text`는 기본적으로 메인 번들을 보기 때문에, 모듈 안에서는 번들을 직접 지정한다.

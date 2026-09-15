@@ -21,6 +21,12 @@
             "state": "translated",
             "value": "十二小节布鲁斯"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "十二小節藍調"
+          }
         }
       }
     },
@@ -40,6 +46,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "三和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "三和弦"
@@ -67,6 +79,12 @@
             "state": "translated",
             "value": "50年代进行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50年代進行"
+          }
         }
       }
     },
@@ -86,6 +104,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "六和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "六和弦"
@@ -113,6 +137,12 @@
             "state": "translated",
             "value": "七和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "七和弦"
+          }
         }
       }
     },
@@ -135,6 +165,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "vi 起始进行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vi 起始進行"
           }
         }
       }
@@ -159,6 +195,12 @@
             "state": "translated",
             "value": "最常用的四个和弦，从抒情歌到 K-pop 都能听到。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最常用的四個和弦，從抒情歌到 K-pop 都聽得到。"
+          }
         }
       }
     },
@@ -178,6 +220,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "九和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "九和弦"
@@ -205,6 +253,12 @@
             "state": "translated",
             "value": "小调"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小調"
+          }
         }
       }
     },
@@ -224,6 +278,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Do"
@@ -251,6 +311,12 @@
             "state": "translated",
             "value": "Do♯"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do♯"
+          }
         }
       }
     },
@@ -273,6 +339,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "属七和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屬七和弦"
           }
         }
       }
@@ -297,6 +369,12 @@
             "state": "translated",
             "value": "同时弹奏"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同時彈奏"
+          }
         }
       }
     },
@@ -319,6 +397,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "减三和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "減三和弦"
           }
         }
       }
@@ -343,6 +427,12 @@
             "state": "translated",
             "value": "减七和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "減七和弦"
+          }
         }
       }
     },
@@ -362,6 +452,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "La"
@@ -389,6 +485,12 @@
             "state": "translated",
             "value": "La♭"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La♭"
+          }
         }
       }
     },
@@ -408,6 +510,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La♯"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "La♯"
@@ -435,6 +543,12 @@
             "state": "translated",
             "value": "Re"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Re"
+          }
         }
       }
     },
@@ -454,6 +568,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Re♭"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Re♭"
@@ -481,6 +601,12 @@
             "state": "translated",
             "value": "Re♯"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Re♯"
+          }
         }
       }
     },
@@ -500,6 +626,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小三和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "小三和弦"
@@ -527,6 +659,12 @@
             "state": "translated",
             "value": "小九和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小九和弦"
+          }
         }
       }
     },
@@ -546,6 +684,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小大七和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "小大七和弦"
@@ -573,6 +717,12 @@
             "state": "translated",
             "value": "小七和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小七和弦"
+          }
         }
       }
     },
@@ -592,6 +742,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小六和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "小六和弦"
@@ -619,6 +775,12 @@
             "state": "translated",
             "value": "小加九和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小加九和弦"
+          }
         }
       }
     },
@@ -641,6 +803,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "小调的解决，从 m7♭5 开始。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小調的解決，從 m7♭5 開始。"
           }
         }
       }
@@ -665,6 +833,12 @@
             "state": "translated",
             "value": "小调二五一"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小調二五一"
+          }
         }
       }
     },
@@ -687,6 +861,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "小调流行进行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小調流行進行"
           }
         }
       }
@@ -711,6 +891,12 @@
             "state": "translated",
             "value": "从小调开始、明亮展开，City Pop 中常听到的走向。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從小調開始、明亮展開，City Pop 中常聽到的走向。"
+          }
         }
       }
     },
@@ -730,6 +916,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大三和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "大三和弦"
@@ -757,6 +949,12 @@
             "state": "translated",
             "value": "大九和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大九和弦"
+          }
         }
       }
     },
@@ -776,6 +974,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大七和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "大七和弦"
@@ -803,6 +1007,12 @@
             "state": "translated",
             "value": "大六和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大六和弦"
+          }
         }
       }
     },
@@ -822,6 +1032,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Mi"
@@ -849,6 +1065,12 @@
             "state": "translated",
             "value": "Mi♭"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi♭"
+          }
         }
       }
     },
@@ -871,6 +1093,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "半音下行的弗拉门戈风格小调进行。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "半音下行的佛朗明哥風格小調進行。"
           }
         }
       }
@@ -895,6 +1123,12 @@
             "state": "translated",
             "value": "布鲁斯与摇滚乐的基本型，全部用属七和弦演奏。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "藍調與搖滾樂的基本型，全部用屬七和弦彈奏。"
+          }
         }
       }
     },
@@ -917,6 +1151,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "挂二和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掛二和弦"
           }
         }
       }
@@ -941,6 +1181,12 @@
             "state": "translated",
             "value": "挂四和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掛四和弦"
+          }
         }
       }
     },
@@ -963,6 +1209,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "属七升九和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屬七升九和弦"
           }
         }
       }
@@ -987,6 +1239,12 @@
             "state": "translated",
             "value": "属七升十一和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屬七升十一和弦"
+          }
         }
       }
     },
@@ -1009,6 +1267,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "属七挂四和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屬七掛四和弦"
           }
         }
       }
@@ -1033,6 +1297,12 @@
             "state": "translated",
             "value": "属七降九和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屬七降九和弦"
+          }
         }
       }
     },
@@ -1052,6 +1322,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sol"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Sol"
@@ -1079,6 +1355,12 @@
             "state": "translated",
             "value": "Sol♭"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sol♭"
+          }
         }
       }
     },
@@ -1098,6 +1380,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sol♯"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Sol♯"
@@ -1125,6 +1413,12 @@
             "state": "translated",
             "value": "Si"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si"
+          }
         }
       }
     },
@@ -1144,6 +1438,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si♭"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Si♭"
@@ -1171,6 +1471,12 @@
             "state": "translated",
             "value": "六九和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "六九和弦"
+          }
         }
       }
     },
@@ -1190,6 +1496,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "十三和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "十三和弦"
@@ -1217,6 +1529,12 @@
             "state": "translated",
             "value": "琶音"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "琶音"
+          }
         }
       }
     },
@@ -1240,6 +1558,12 @@
             "state": "translated",
             "value": "安达卢西亚终止"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安達魯西亞終止"
+          }
         }
       }
     },
@@ -1259,6 +1583,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加九和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "加九和弦"
@@ -1286,6 +1616,12 @@
             "state": "translated",
             "value": "阴暗却开阔，摇滚与 K-pop 副歌的常客。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "陰暗卻開闊，搖滾與 K-pop 副歌的常客。"
+          }
         }
       }
     },
@@ -1305,6 +1641,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "增三和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "增三和弦"
@@ -1332,6 +1674,12 @@
             "state": "translated",
             "value": "增属七和弦"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "增屬七和弦"
+          }
         }
       }
     },
@@ -1355,6 +1703,12 @@
             "state": "translated",
             "value": "老派流行与嘟喔普的基本型，柔和地回到原位。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "老派流行與嘟哇普的基本型，柔和地回到原位。"
+          }
         }
       }
     },
@@ -1374,6 +1728,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "十一和弦"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "十一和弦"
@@ -1401,6 +1761,12 @@
             "state": "translated",
             "value": "大调"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大調"
+          }
         }
       }
     },
@@ -1423,6 +1789,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "爵士乐的骨架，用七和弦平稳地解决。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "爵士樂的骨架，用七和弦平穩地解決。"
           }
         }
       }
@@ -1447,6 +1819,12 @@
             "state": "translated",
             "value": "卡农进行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "卡農進行"
+          }
         }
       }
     },
@@ -1469,6 +1847,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "张力音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "張力音"
           }
         }
       }
@@ -1493,6 +1877,12 @@
             "state": "translated",
             "value": "二五一进行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "二五一進行"
+          }
         }
       }
     },
@@ -1512,6 +1902,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fa"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "Fa"
@@ -1539,6 +1935,12 @@
             "state": "translated",
             "value": "Fa♯"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fa♯"
+          }
         }
       }
     },
@@ -1561,6 +1963,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "强力和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "強力和弦"
           }
         }
       }
@@ -1585,6 +1993,12 @@
             "state": "translated",
             "value": "来自帕赫贝尔《卡农》的八个和弦，低音每小节下行是其特点。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "來自帕海貝爾《卡農》的八個和弦，低音每小節下行是其特色。"
+          }
         }
       }
     },
@@ -1608,6 +2022,12 @@
             "state": "translated",
             "value": "流行进行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "流行進行"
+          }
         }
       }
     },
@@ -1630,6 +2050,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "半减七和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "半減七和弦"
           }
         }
       }

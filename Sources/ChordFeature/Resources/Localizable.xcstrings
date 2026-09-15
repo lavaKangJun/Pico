@@ -21,6 +21,12 @@
             "state": "translated",
             "value": "第一"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第一"
+          }
         }
       }
     },
@@ -40,6 +46,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第二"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "第二"
@@ -67,6 +79,12 @@
             "state": "translated",
             "value": "第三"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第三"
+          }
         }
       }
     },
@@ -86,6 +104,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原位"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "原位"
@@ -113,6 +137,12 @@
             "state": "translated",
             "value": "播放"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "播放"
+          }
         }
       }
     },
@@ -132,6 +162,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根音"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "根音"
@@ -159,6 +195,12 @@
             "state": "translated",
             "value": "选择根音，即可查看以该音构成的和弦。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇根音，即可查看以該音構成的和弦。"
+          }
         }
       }
     },
@@ -178,6 +220,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大三和弦 · %@"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "大三和弦 · %@"
@@ -205,6 +253,12 @@
             "state": "translated",
             "value": "分类"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分類"
+          }
         }
       }
     },
@@ -224,6 +278,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "八度"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "八度"
@@ -251,6 +311,12 @@
             "state": "translated",
             "value": "播放方式"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "播放方式"
+          }
         }
       }
     },
@@ -274,6 +340,12 @@
             "state": "translated",
             "value": "转位"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轉位"
+          }
         }
       }
     },
@@ -293,6 +365,12 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止"
+          }
+        },
+        "zh-Hant": {
           "stringUnit": {
             "state": "translated",
             "value": "停止"
@@ -320,6 +398,12 @@
             "state": "translated",
             "value": "调性"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "調性"
+          }
         }
       }
     },
@@ -342,6 +426,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "播放进行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "播放進行"
           }
         }
       }
@@ -366,6 +456,12 @@
             "state": "translated",
             "value": "和弦进行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "和弦進行"
+          }
         }
       }
     },
@@ -389,6 +485,12 @@
             "state": "translated",
             "value": "和弦查询"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "和弦查詢"
+          }
         }
       }
     },
@@ -411,6 +513,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "点按和弦即可查看构成音。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點按和弦即可查看組成音。"
           }
         }
       }

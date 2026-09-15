@@ -6,9 +6,9 @@ private let bundleIDPrefix = "com.lavakangjun.pico"
 private let deploymentTargets: DeploymentTargets = .iOS("17.0")
 private let destinations: Destinations = [.iPhone, .iPad]
 
-/// 한국어로 쓰고 영어·일본어·중국어(간체)로 번역한다.
+/// 한국어로 쓰고 영어·일본어·중국어(간체/번체)로 번역한다.
 private let developmentRegion = "ko"
-private let knownRegions = ["ko", "en", "ja", "zh-Hans"]
+private let knownRegions = ["ko", "en", "ja", "zh-Hans", "zh-Hant"]
 
 private let baseSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0",

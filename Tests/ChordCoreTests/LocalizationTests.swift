@@ -13,9 +13,12 @@ struct LocalizationTests {
         return bundle.localizedString(forKey: key, value: nil, table: nil)
     }
 
-    @Test("지원하는 네 언어가 모두 번들에 들어 있다")
+    /// 지원하는 모든 언어.
+    private static let languages = ["ko", "en", "ja", "zh-Hans", "zh-Hant"]
+
+    @Test("지원하는 언어가 모두 번들에 들어 있다")
     func everyLanguageIsBundled() {
-        for language in ["ko", "en", "ja", "zh-Hans"] {
+        for language in Self.languages {
             #expect(Bundle.chordCore.path(forResource: language, ofType: "lproj") != nil,
                     "\(language) 번역이 빠졌다")
         }
@@ -27,6 +30,15 @@ struct LocalizationTests {
         #expect(string("마이너 세븐스", in: "en") == "Minor 7th")
         #expect(string("마이너 세븐스", in: "ja") == "マイナー7th")
         #expect(string("마이너 세븐스", in: "zh-Hans") == "小七和弦")
+        #expect(string("마이너 세븐스", in: "zh-Hant") == "小七和弦")
+    }
+
+    @Test("간체와 번체는 서로 다른 글자를 쓴다")
+    func simplifiedAndTraditionalDiffer() {
+        #expect(string("도미넌트 세븐스", in: "zh-Hans") == "属七和弦")
+        #expect(string("도미넌트 세븐스", in: "zh-Hant") == "屬七和弦")
+        #expect(string("12마디 블루스", in: "zh-Hans") == "十二小节布鲁斯")
+        #expect(string("12마디 블루스", in: "zh-Hant") == "十二小節藍調")
     }
 
     @Test("계이름도 언어를 따라간다")
@@ -42,6 +54,7 @@ struct LocalizationTests {
         #expect(string("팝 진행", in: "en") == "Pop progression")
         #expect(string("팝 진행", in: "ja") == "ポップ進行")
         #expect(string("팝 진행", in: "zh-Hans") == "流行进行")
+        #expect(string("팝 진행", in: "zh-Hant") == "流行進行")
         #expect(string("마이너 조성의 해결. m7♭5에서 시작한다.", in: "en") ==
             "The minor-key resolution, starting from m7♭5.")
     }
@@ -53,7 +66,7 @@ struct LocalizationTests {
         keys.formUnion(ChordQuality.Category.allCases.map { key(for: $0) })
         keys.formUnion(ChordProgression.all.flatMap { [$0.nameKey, $0.summaryKey] })
 
-        for language in ["en", "ja", "zh-Hans"] {
+        for language in Self.languages.filter({ $0 != "ko" }) {
             for key in keys {
                 let translated = string(key, in: language)
                 #expect(translated != nil && translated != key,
