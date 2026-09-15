@@ -44,18 +44,20 @@ public struct PianoKeyboardView: View {
             let whiteWidth = proxy.size.width / CGFloat(whiteKeys.count)
             let blackWidth = whiteWidth * 0.62
             let blackHeight = proxy.size.height * 0.62
+            // 흰 건반 기준으로 한 번만 정해 두 건반이 같은 크기로 보이게 한다.
+            let labelSize = min(11, whiteWidth * 0.42)
 
             ZStack(alignment: .topLeading) {
                 HStack(spacing: 0) {
                     ForEach(whiteKeys, id: \.self) { note in
-                        whiteKey(note: note, width: whiteWidth, height: proxy.size.height)
+                        whiteKey(note: note, width: whiteWidth, height: proxy.size.height, labelSize: labelSize)
                     }
                 }
 
                 ForEach(Array(whiteKeys.enumerated()), id: \.offset) { index, note in
                     let blackNote = note + 1
                     if range.contains(blackNote), PitchClass(midiNote: blackNote).isAccidental {
-                        blackKey(note: blackNote, width: blackWidth, height: blackHeight)
+                        blackKey(note: blackNote, width: blackWidth, height: blackHeight, labelSize: labelSize)
                             .offset(x: CGFloat(index + 1) * whiteWidth - blackWidth / 2)
                     }
                 }
@@ -72,14 +74,14 @@ public struct PianoKeyboardView: View {
 
     // MARK: - 건반
 
-    private func whiteKey(note: Int, width: CGFloat, height: CGFloat) -> some View {
+    private func whiteKey(note: Int, width: CGFloat, height: CGFloat, labelSize: CGFloat) -> some View {
         let isOn = highlightedSet.contains(note)
         return ZStack(alignment: .bottom) {
             Rectangle()
                 .fill(isOn ? color(for: note) : Color(.systemBackground))
             if isOn {
                 Text(PitchClass(midiNote: note).name(preferringFlats: prefersFlats))
-                    .font(.system(size: min(11, width * 0.42), weight: .semibold))
+                    .font(.system(size: min(12, width * 0.42), weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.bottom, 8)
             }
@@ -94,15 +96,15 @@ public struct PianoKeyboardView: View {
         .onTapGesture { onKeyTap?(note) }
     }
 
-    private func blackKey(note: Int, width: CGFloat, height: CGFloat) -> some View {
+    private func blackKey(note: Int, width: CGFloat, height: CGFloat, labelSize: CGFloat) -> some View {
         let isOn = highlightedSet.contains(note)
         return ZStack(alignment: .bottom) {
             RoundedRectangle(cornerRadius: 3, style: .continuous)
                 .fill(isOn ? color(for: note) : Color(red: 0.13, green: 0.13, blue: 0.15))
             if isOn {
                 Text(PitchClass(midiNote: note).name(preferringFlats: prefersFlats))
-                    // 검은 건반은 좁아서 글자가 너무 작아진다. 폭의 대부분을 쓰고 넘치면 줄인다.
-                    .font(.system(size: min(13, width * 0.72), weight: .semibold))
+                    // 흰 건반과 같은 크기. 좁은 건반에서 두 글자가 넘칠 때만 줄어든다.
+                    .font(.system(size: labelSize, weight: .semibold))
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
                     .foregroundStyle(.white)
