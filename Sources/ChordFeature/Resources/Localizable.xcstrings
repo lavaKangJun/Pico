@@ -146,35 +146,6 @@
         }
       }
     },
-    "루트 코드": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Root notes"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ルート音"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "根音"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "根音"
-          }
-        }
-      }
-    },
     "루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.": {
       "extractionState": "manual",
       "localizations": {

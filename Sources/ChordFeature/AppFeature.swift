@@ -7,8 +7,10 @@ import Foundation
 public struct AppFeature: Sendable {
     @ObservableState
     public struct State: Equatable {
+        /// 탭을 다시 열 때까지는 쓰이지 않는다.
         public var tab: Tab
         public var roots: RootListFeature.State
+        /// 화면에서는 빠져 있지만 리듀서는 그대로 돌아간다.
         public var progression: ProgressionFeature.State
 
         public init(

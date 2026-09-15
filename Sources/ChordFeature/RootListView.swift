@@ -28,7 +28,7 @@ public struct RootListView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle(Text("루트 코드", bundle: .chordFeature))
+            .navigationTitle(Text("코드 찾기", bundle: .chordFeature))
         } destination: { store in
             ChordFinderView(store: store)
         }

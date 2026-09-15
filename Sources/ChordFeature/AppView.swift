@@ -9,22 +9,10 @@ public struct AppView: View {
     }
 
     public var body: some View {
-        TabView(selection: $store.tab) {
-            RootListView(store: store.scope(state: \.roots, action: \.roots))
-                .tabItem {
-                    Label(AppFeature.Tab.finder.title, systemImage: AppFeature.Tab.finder.systemImage)
-                }
-                .tag(AppFeature.Tab.finder)
-
-            NavigationStack {
-                ProgressionView(store: store.scope(state: \.progression, action: \.progression))
-            }
-            .tabItem {
-                Label(AppFeature.Tab.progression.title, systemImage: AppFeature.Tab.progression.systemImage)
-            }
-            .tag(AppFeature.Tab.progression)
-        }
-        .tint(Theme.accent)
+        // 지금은 코드 찾기 흐름만 보여 준다.
+        // 코드 진행 화면은 리듀서와 뷰를 그대로 둔 채 화면에서만 빼 놓았다.
+        RootListView(store: store.scope(state: \.roots, action: \.roots))
+            .tint(Theme.accent)
     }
 }
 
