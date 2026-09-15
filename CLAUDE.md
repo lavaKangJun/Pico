@@ -176,8 +176,24 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 내려온 크기로 바뀌어서, 비교할 때마다 "요청과 다르다 → 재요청"이 무한히 반복된다.
 요청한 크기는 코디네이터가 따로 들고 있다.
 
-**배포 전에 바꿔야 할 값** (지금은 전부 구글 테스트 ID다):
-`AdMob.bannerAdUnitID`, `Project.swift`의 `GADApplicationIdentifier`와 `SKAdNetworkItems`.
+### 배포 체크리스트
+
+지금 들어 있는 ID는 전부 구글이 공개한 테스트 값이다. 실제 배포 전에:
+
+1. `AdMob.bannerAdUnitID`를 AdMob 콘솔에서 발급받은 배너 단위 ID로
+2. `Project.swift`의 `GADApplicationIdentifier`를 실제 앱 ID로
+3. `Project.swift`의 `SKAdNetworkItems`를 구글 문서의 전체 목록으로
+4. 개발자 웹사이트 루트에 `app-ads.txt`를 올리고 AdMob 콘솔에서 인식 확인
+
+`app-ads.txt`는 "이 퍼블리셔 ID로 내 앱 인벤토리를 파는 건 나뿐"이라는 선언이다.
+없으면 누군가 광고 단위 ID를 자기 앱에 박아 가짜 노출을 만들어도 막을 방법이 없고,
+그 부정 트래픽이 내 계정에 적립돼 수익 차감이나 계정 정지로 돌아온다.
+앱스토어 등록 정보의 개발자 웹사이트와 도메인이 같아야 인식된다.
+
+AdMob 앱 ID와 광고 단위 ID는 **비밀값이 아니다.** 구글 문서가 Info.plist와 코드에 그대로
+넣으라고 안내하는 공개 식별자다. 환경변수나 별도 설정 파일로 빼낼 이유가 없다.
+숨겨야 하는 건 AdMob 계정 자격증명, 리포팅 API 키, GCP 서비스 계정 JSON 쪽이고
+이 저장소에는 그런 것이 없다.
 
 ## 규칙
 

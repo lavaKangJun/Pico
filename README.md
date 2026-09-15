@@ -18,13 +18,16 @@
 코드 찾기 화면의 코드 카드 바로 아래에 AdMob 배너를 띄운다. (`AdBannerView`)
 창 너비에 맞춘 앵커드 어댑티브 배너이고, 광고를 못 받으면 자리를 접어 빈 카드를 남기지 않는다.
 
-> **배포 전에 바꿔야 할 것**
-> - `Sources/ChordFeature/AdBannerView.swift`의 `AdMob.bannerAdUnitID`
-> - `Project.swift`의 `GADApplicationIdentifier`
-> - `Project.swift`의 `SKAdNetworkItems` — 구글 문서의 전체 목록으로 채운다
+> **배포 전에 할 것**
+> 1. `Sources/ChordFeature/AdBannerView.swift`의 `AdMob.bannerAdUnitID` 교체
+> 2. `Project.swift`의 `GADApplicationIdentifier` 교체
+> 3. `Project.swift`의 `SKAdNetworkItems`를 구글 문서의 전체 목록으로
+> 4. 개발자 웹사이트 루트에 `app-ads.txt` 게시 — 광고 단위 ID 도용으로 생기는
+>    부정 트래픽이 내 계정에 적립되는 걸 막는다
 >
 > 지금 들어 있는 값은 모두 구글이 공개한 **테스트 ID**라 실제 광고도 수익도 나가지 않는다.
 > 화면에 뜨는 "Test mode" 배지도 실 단위로 바꾸면 사라진다.
+> 참고로 이 ID들은 비밀값이 아니라 공개 식별자다. 코드에 두는 것이 정상이다.
 
 ## 언어
 
