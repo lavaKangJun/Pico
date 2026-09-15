@@ -48,6 +48,8 @@ public struct AdBannerView: View {
                     onFailure: { phase = .failed }
                 )
                 .frame(width: size.size.width, height: height(default: size.size.height))
+                // 크리에이티브가 슬롯보다 작을 때가 많아, 여백을 줘서 카드 안에 앉은 모양으로 만든다.
+                .padding(.vertical, 12)
                 // 다른 카드와 같은 모양으로 맞추고, 광고가 덜 채운 자리는 카드 색으로 덮는다.
                 .background(Theme.card)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
@@ -70,6 +72,21 @@ public struct AdBannerView: View {
     }
 }
 
+/// 크리에이티브가 슬롯보다 작을 때 SDK가 남는 자리를 검게 칠한다.
+///
+/// 로드 시점에 한 번 지워도 레이아웃이 다시 돌면 되살아나므로, 레이아웃마다 지운다.
+private final class ClearBackgroundBannerView: BannerView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        backgroundColor = .clear
+        isOpaque = false
+        for subview in subviews {
+            subview.backgroundColor = .clear
+            subview.isOpaque = false
+        }
+    }
+}
+
 private struct BannerRepresentable: UIViewRepresentable {
     let adUnitID: String
     let adSize: AdSize
@@ -82,9 +99,7 @@ private struct BannerRepresentable: UIViewRepresentable {
 
     func makeUIView(context: Context) -> BannerView {
         context.coordinator.requestedSize = adSize.size
-        let banner = BannerView(adSize: adSize)
-        // 기본 배경이 검은색이라 광고가 차기 전이나 여백에 검은 띠가 보인다.
-        banner.backgroundColor = .clear
+        let banner = ClearBackgroundBannerView(adSize: adSize)
         banner.adUnitID = adUnitID
         banner.rootViewController = rootViewController
         banner.delegate = context.coordinator
@@ -118,15 +133,6 @@ private struct BannerRepresentable: UIViewRepresentable {
         }
 
         func bannerViewDidReceiveAd(_ bannerView: BannerView) {
-            // 크리에이티브가 슬롯보다 작으면 SDK가 남는 자리를 검게 칠한다.
-            // 배너와 그 컨테이너까지 투명으로 돌려, 뒤에 깔린 카드 색이 비치게 한다.
-            bannerView.backgroundColor = .clear
-            bannerView.isOpaque = false
-            for subview in bannerView.subviews {
-                subview.backgroundColor = .clear
-                subview.isOpaque = false
-            }
-
             // 요청한 크기보다 큰 광고가 오면 잘리므로 실제 높이에 맞춘다.
             let height = bannerView.adSize.size.height
             guard height > 0 else { return }
