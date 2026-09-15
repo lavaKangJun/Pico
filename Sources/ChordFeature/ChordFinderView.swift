@@ -83,25 +83,25 @@ public struct ChordFinderView: View {
 
     private var summaryCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline, spacing: 10) {
-                Text(store.symbol)
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .contentTransition(.numericText())
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    Text(store.symbol)
+                        .font(.system(size: 40, weight: .bold, design: .rounded))
+                        .contentTransition(.numericText())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
 
-                // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 코드 이름 바로 옆에서 고른다.
-                if store.root.enharmonic != nil {
-                    spellingPicker
+                    // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 코드 이름 바로 옆에서 고른다.
+                    if store.root.enharmonic != nil {
+                        spellingPicker
+                    }
+
+                    Spacer(minLength: 0)
                 }
-
-                Spacer(minLength: 8)
 
                 Text(store.quality.displayName)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
             }
 
             FlowLayout(spacing: 8) {
