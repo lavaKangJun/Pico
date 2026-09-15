@@ -8,9 +8,6 @@ struct PicoApp: App {
     @MainActor
     static let store = Store(initialState: AppFeature.State()) {
         AppFeature()
-        #if DEBUG
-            ._printChanges()
-        #endif
     }
 
     init() {
