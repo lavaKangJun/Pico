@@ -81,26 +81,25 @@ public struct ChordFinderView: View {
 
     private var summaryCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .top, spacing: 12) {
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
                 Text(store.symbol)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
                     .contentTransition(.numericText())
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
 
-                Spacer(minLength: 0)
-
-                VStack(alignment: .trailing, spacing: 6) {
-                    // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 직접 고르게 한다.
-                    if store.root.enharmonic != nil {
-                        spellingPicker
-                    }
-                    Text(store.quality.displayName)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
+                // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 코드 이름 바로 옆에서 고른다.
+                if store.root.enharmonic != nil {
+                    spellingPicker
                 }
+
+                Spacer(minLength: 8)
+
+                Text(store.quality.displayName)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
             }
 
             FlowLayout(spacing: 8) {
@@ -143,7 +142,9 @@ public struct ChordFinderView: View {
             Text("표기", bundle: .chordFeature)
         }
         .pickerStyle(.segmented)
-        .frame(width: 124)
+        .frame(width: 104)
+        // 세그먼트를 코드 이름의 밑선에 맞춰 나란히 놓는다.
+        .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 4 }
     }
 
     // MARK: - 건반과 재생
