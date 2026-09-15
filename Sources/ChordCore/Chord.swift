@@ -42,6 +42,11 @@ public struct Chord: Sendable, Hashable, Codable, Identifiable {
         pitches.map { $0.name(preferringFlats: prefersFlatSpelling) }
     }
 
+    /// 구성음 계이름. 음이름과 같은 표기 규칙을 쓴다.
+    public var solfegeNames: [String] {
+        pitches.map { $0.solfege(preferringFlats: prefersFlatSpelling) }
+    }
+
     /// 구성음의 도수 이름과 음이름 쌍.
     public var tones: [Tone] {
         var seen = Set<PitchClass>()

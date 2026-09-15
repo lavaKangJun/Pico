@@ -10,18 +10,67 @@ public struct ChordFinderView: View {
     }
 
     public var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                summaryCard
-                keyboardCard
-                rootPicker
-                qualityPicker
+        VStack(spacing: 0) {
+            rootStrip
+            ScrollView {
+                VStack(spacing: 16) {
+                    summaryCard
+                    keyboardCard
+                    qualityPicker
+                }
+                .padding(16)
             }
-            .padding(16)
         }
         .background(Theme.groupedBackground)
-        .navigationTitle("코드 찾기")
+        .navigationTitle(store.symbol)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    // MARK: - 최상단 루트 스트립
+
+    /// 화면 맨 위에 고정되는 루트 선택 줄. 가로로 넘겨 다른 루트로 바로 옮겨 간다.
+    private var rootStrip: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(PitchClass.allCases) { pitch in
+                        let isSelected = pitch == store.root
+                        Button {
+                            store.send(.rootTapped(pitch))
+                        } label: {
+                            VStack(spacing: 1) {
+                                Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
+                                    .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                Text(pitch.solfege)
+                                    .font(.caption2)
+                                    .opacity(0.7)
+                            }
+                            .frame(width: 52)
+                            .padding(.vertical, 8)
+                            .background(
+                                isSelected ? Theme.accent : Color(.tertiarySystemGroupedBackground),
+                                in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            )
+                            .foregroundStyle(isSelected ? Color.white : Color.primary)
+                        }
+                        .buttonStyle(.plain)
+                        .id(pitch)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+            }
+            .onAppear { proxy.scrollTo(store.root, anchor: .center) }
+            .onChange(of: store.root) { _, newRoot in
+                withAnimation(.easeOut(duration: 0.2)) {
+                    proxy.scrollTo(newRoot, anchor: .center)
+                }
+            }
+        }
+        .background(Theme.card)
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
     }
 
     // MARK: - 코드 요약
@@ -57,7 +106,7 @@ public struct ChordFinderView: View {
                 }
             }
 
-            Text(store.chord.pitches.map(\.solfege).joined(separator: " · "))
+            Text(store.chord.solfegeNames.joined(separator: " · "))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -148,42 +197,6 @@ public struct ChordFinderView: View {
         case 2: "2전위"
         default: "\(inversion)전위"
         }
-    }
-
-    // MARK: - 루트 고르기
-
-    private var rootPicker: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("루트")
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.secondary)
-
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 6), spacing: 8) {
-                ForEach(PitchClass.allCases) { pitch in
-                    let isSelected = pitch == store.root
-                    Button {
-                        store.send(.rootTapped(pitch))
-                    } label: {
-                        VStack(spacing: 1) {
-                            Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
-                                .font(.system(.body, design: .rounded).weight(.semibold))
-                            Text(pitch.solfege)
-                                .font(.caption2)
-                                .opacity(0.7)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
-                        .background(
-                            isSelected ? Theme.accent : Color(.tertiarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        )
-                        .foregroundStyle(isSelected ? Color.white : Color.primary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-        .cardStyle()
     }
 
     // MARK: - 코드 성질 고르기

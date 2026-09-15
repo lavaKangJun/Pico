@@ -5,7 +5,7 @@ import Foundation
 public enum PlaybackStyle: String, CaseIterable, Sendable, Hashable, Codable, Identifiable {
     /// 구성음을 한 번에 누른다.
     case block
-    /// 아래에서 위로 한 음씩 굴린다.
+    /// 아르페지오
     case arpeggio
 
     public var id: String { rawValue }

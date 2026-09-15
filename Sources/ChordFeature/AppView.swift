@@ -10,13 +10,11 @@ public struct AppView: View {
 
     public var body: some View {
         TabView(selection: $store.tab) {
-            NavigationStack {
-                ChordFinderView(store: store.scope(state: \.finder, action: \.finder))
-            }
-            .tabItem {
-                Label(AppFeature.Tab.finder.title, systemImage: AppFeature.Tab.finder.systemImage)
-            }
-            .tag(AppFeature.Tab.finder)
+            RootListView(store: store.scope(state: \.roots, action: \.roots))
+                .tabItem {
+                    Label(AppFeature.Tab.finder.title, systemImage: AppFeature.Tab.finder.systemImage)
+                }
+                .tag(AppFeature.Tab.finder)
 
             NavigationStack {
                 ProgressionView(store: store.scope(state: \.progression, action: \.progression))

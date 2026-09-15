@@ -8,16 +8,16 @@ public struct AppFeature: Sendable {
     @ObservableState
     public struct State: Equatable {
         public var tab: Tab
-        public var finder: ChordFinderFeature.State
+        public var roots: RootListFeature.State
         public var progression: ProgressionFeature.State
 
         public init(
             tab: Tab = .finder,
-            finder: ChordFinderFeature.State = .init(),
+            roots: RootListFeature.State = .init(),
             progression: ProgressionFeature.State = .init()
         ) {
             self.tab = tab
-            self.finder = finder
+            self.roots = roots
             self.progression = progression
         }
     }
@@ -43,7 +43,7 @@ public struct AppFeature: Sendable {
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case finder(ChordFinderFeature.Action)
+        case roots(RootListFeature.Action)
         case progression(ProgressionFeature.Action)
     }
 
@@ -52,8 +52,8 @@ public struct AppFeature: Sendable {
     public var body: some ReducerOf<Self> {
         BindingReducer()
 
-        Scope(state: \.finder, action: \.finder) {
-            ChordFinderFeature()
+        Scope(state: \.roots, action: \.roots) {
+            RootListFeature()
         }
 
         Scope(state: \.progression, action: \.progression) {

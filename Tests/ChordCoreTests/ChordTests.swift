@@ -57,6 +57,14 @@ struct ChordTests {
         #expect(Set(chord.pitches).count == chord.pitches.count)
     }
 
+    @Test("코드의 계이름은 음이름 표기를 따라간다")
+    func chordSolfege() {
+        #expect(Chord(root: .fSharp, quality: .major).pitchNames == ["F♯", "A♯", "C♯"])
+        #expect(Chord(root: .fSharp, quality: .major).solfegeNames == ["파♯", "라♯", "도♯"])
+        #expect(Chord(root: .aSharp, quality: .major).pitchNames == ["B♭", "D", "F"])
+        #expect(Chord(root: .aSharp, quality: .major).solfegeNames == ["시♭", "레", "파"])
+    }
+
     @Test("구성음으로 코드를 되찾을 수 있다")
     func reverseLookup() {
         let matches = Chord.matching(midiNotes: [60, 64, 67])
@@ -86,6 +94,15 @@ struct PitchClassTests {
         #expect(60.midiNoteName() == "C4")
         #expect(69.midiNoteName() == "A4")
         #expect(61.midiNoteName(preferringFlats: true) == "D♭4")
+    }
+
+    @Test("계이름은 음이름과 같은 표기 규칙을 따른다")
+    func solfegeSpelling() {
+        // D♭이면 계이름도 도♯이 아니라 레♭으로 읽는다.
+        #expect(PitchClass.cSharp.flatName == "D♭")
+        #expect(PitchClass.cSharp.solfege == "레♭")
+        #expect(PitchClass.cSharp.solfege(preferringFlats: false) == "도♯")
+        #expect(PitchClass.fSharp.solfege == "파♯")
     }
 
     @Test("A4는 440Hz다")

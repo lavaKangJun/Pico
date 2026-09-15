@@ -19,7 +19,8 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
 
     private static let sharpNames = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
     private static let flatNames = ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
-    private static let solfegeNames = ["도", "도♯", "레", "미♭", "미", "파", "파♯", "솔", "솔♯", "라", "시♭", "시"]
+    private static let sharpSolfege = ["도", "도♯", "레", "레♯", "미", "파", "파♯", "솔", "솔♯", "라", "라♯", "시"]
+    private static let flatSolfege = ["도", "레♭", "레", "미♭", "미", "파", "솔♭", "솔", "라♭", "라", "시♭", "시"]
 
     /// 샤프 표기 (예: `C♯`)
     public var sharpName: String { Self.sharpNames[rawValue] }
@@ -27,8 +28,13 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
     /// 플랫 표기 (예: `D♭`)
     public var flatName: String { Self.flatNames[rawValue] }
 
-    /// 계이름 (예: `도`)
-    public var solfege: String { Self.solfegeNames[rawValue] }
+    /// 음이름과 같은 표기 규칙을 따르는 계이름. (예: `D♭` → `레♭`)
+    public var solfege: String { solfege(preferringFlats: prefersFlatSpelling) }
+
+    /// 조표 성향에 맞춘 계이름.
+    public func solfege(preferringFlats: Bool) -> String {
+        preferringFlats ? Self.flatSolfege[rawValue] : Self.sharpSolfege[rawValue]
+    }
 
     /// 검은 건반 여부.
     public var isAccidental: Bool { sharpName.count > 1 }
