@@ -131,7 +131,8 @@ public struct ChordFinderView: View {
                     store.send(.playButtonTapped)
                 } label: {
                     Label {
-                        Text("들어보기", bundle: .chordFeature)
+                        // 어느 언어에서나 그대로 "Play"로 둔다.
+                        Text(verbatim: "Play")
                     } icon: {
                         Image(systemName: "play.fill")
                     }

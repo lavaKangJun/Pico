@@ -117,35 +117,6 @@
         }
       }
     },
-    "들어보기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Play"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "再生"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "播放"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "播放"
-          }
-        }
-      }
-    },
     "루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.": {
       "extractionState": "manual",
       "localizations": {
