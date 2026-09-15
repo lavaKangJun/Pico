@@ -58,7 +58,8 @@ struct RootListFeatureTests {
         #expect(PitchClass.c.combinedName == "C")
         #expect(PitchClass.cSharp.combinedName == "C♯/D♭")
         #expect(PitchClass.gSharp.combinedName == "G♯/A♭")
-        #expect(PitchClass.cSharp.combinedSolfege == "도♯ / 레♭")
+        #expect(PitchClass.cSharp.combinedSolfege == "도♯/레♭")
+        #expect(PitchClass.c.combinedSolfege == "도")
     }
 
     @Test("목록에서 들어가면 관습적으로 흔한 표기로 열린다")

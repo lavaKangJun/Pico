@@ -45,8 +45,10 @@ public struct ChordFinderView: View {
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.6)
-                                Text(pitch.solfege)
+                                Text(pitch.combinedSolfege)
                                     .font(.caption2)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
                                     .opacity(0.7)
                             }
                             .frame(width: 62)

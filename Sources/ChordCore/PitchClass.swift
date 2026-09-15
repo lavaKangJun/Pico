@@ -77,9 +77,9 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
         noteNames.map(\.name).joined(separator: "/")
     }
 
-    /// 목록에 적는 계이름. (예: `도♯/레♭`)
+    /// 목록에 적는 계이름. 음이름과 같은 모양으로 적는다. (예: `도♯/레♭`)
     public var combinedSolfege: String {
-        noteNames.map(\.solfege).joined(separator: " / ")
+        noteNames.map(\.solfege).joined(separator: "/")
     }
 
     /// MIDI 노트 번호의 피치 클래스.
