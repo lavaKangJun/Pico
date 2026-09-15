@@ -9,8 +9,6 @@ public struct PianoKeyboardView: View {
     let rootPitch: PitchClass?
     /// 플랫 표기를 쓸지 여부.
     let prefersFlats: Bool
-    /// 모서리 반경. 카드 끝까지 채울 때는 0으로 두고 바깥에서 자른다.
-    let cornerRadius: CGFloat
     /// 건반을 눌렀을 때.
     let onKeyTap: (@Sendable (Int) -> Void)?
 
@@ -18,13 +16,11 @@ public struct PianoKeyboardView: View {
         highlighted: [Int],
         rootPitch: PitchClass? = nil,
         prefersFlats: Bool = false,
-        cornerRadius: CGFloat = 10,
         onKeyTap: (@Sendable (Int) -> Void)? = nil
     ) {
         self.highlighted = highlighted
         self.rootPitch = rootPitch
         self.prefersFlats = prefersFlats
-        self.cornerRadius = cornerRadius
         self.onKeyTap = onKeyTap
     }
 
@@ -66,9 +62,9 @@ public struct PianoKeyboardView: View {
             }
         }
         .frame(height: 168)
-        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
         )
         .animation(.easeOut(duration: 0.18), value: highlightedSet)

@@ -119,93 +119,85 @@ public struct ChordFinderView: View {
 
     private var keyboardCard: some View {
         VStack(spacing: 14) {
-            // 건반은 카드 위·좌우 끝까지 채워 최대한 넓게 쓴다.
             PianoKeyboardView(
                 highlighted: store.midiNotes,
                 rootPitch: store.root,
                 prefersFlats: store.chord.prefersFlatSpelling,
-                cornerRadius: 0,
                 onKeyTap: { note in store.send(.keyTapped(note)) }
             )
 
-            VStack(spacing: 14) {
-                HStack(spacing: 12) {
-                    Button {
-                        store.send(.playButtonTapped)
-                    } label: {
-                        Label {
-                            // 어느 언어에서나 그대로 "Play"로 둔다.
-                            Text(verbatim: "Play")
-                        } icon: {
-                            Image(systemName: "play.fill")
-                        }
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
+            HStack(spacing: 12) {
+                Button {
+                    store.send(.playButtonTapped)
+                } label: {
+                    Label {
+                        // 어느 언어에서나 그대로 "Play"로 둔다.
+                        Text(verbatim: "Play")
+                    } icon: {
+                        Image(systemName: "play.fill")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Theme.accent)
-
-                    Picker(selection: $store.style) {
-                        ForEach(PlaybackStyle.allCases) { style in
-                            Image(systemName: style.systemImage).tag(style)
-                        }
-                    } label: {
-                        Text("재생 방식", bundle: .chordFeature)
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 110)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(Theme.accent)
 
-                HStack {
-                    Text("전위", bundle: .chordFeature)
-                        .font(.subheadline.weight(.medium))
-                    Spacer()
-                    Picker(selection: .init(
-                        get: { store.inversion },
-                        set: { store.send(.inversionTapped($0)) }
-                    )) {
-                        ForEach(store.inversionOptions, id: \.self) { inversion in
-                            Text(inversionLabel(inversion)).tag(inversion)
-                        }
-                    } label: {
-                        Text("전위", bundle: .chordFeature)
+                Picker(selection: $store.style) {
+                    ForEach(PlaybackStyle.allCases) { style in
+                        Image(systemName: style.systemImage).tag(style)
                     }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 220)
+                } label: {
+                    Text("재생 방식", bundle: .chordFeature)
                 }
-
-                HStack {
-                    Text("옥타브", bundle: .chordFeature)
-                        .font(.subheadline.weight(.medium))
-                    Spacer()
-                    Button {
-                        store.send(.octaveStepped(-1))
-                    } label: {
-                        Image(systemName: "minus")
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(!store.canLowerOctave)
-
-                    Text("\(store.octave)")
-                        .font(.system(.body, design: .rounded).weight(.semibold))
-                        .frame(minWidth: 28)
-
-                    Button {
-                        store.send(.octaveStepped(1))
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(!store.canRaiseOctave)
-                }
+                .pickerStyle(.segmented)
+                .frame(width: 110)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+
+            HStack {
+                Text("전위", bundle: .chordFeature)
+                    .font(.subheadline.weight(.medium))
+                Spacer()
+                Picker(selection: .init(
+                    get: { store.inversion },
+                    set: { store.send(.inversionTapped($0)) }
+                )) {
+                    ForEach(store.inversionOptions, id: \.self) { inversion in
+                        Text(inversionLabel(inversion)).tag(inversion)
+                    }
+                } label: {
+                    Text("전위", bundle: .chordFeature)
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 220)
+            }
+
+            HStack {
+                Text("옥타브", bundle: .chordFeature)
+                    .font(.subheadline.weight(.medium))
+                Spacer()
+                Button {
+                    store.send(.octaveStepped(-1))
+                } label: {
+                    Image(systemName: "minus")
+                }
+                .buttonStyle(.bordered)
+                .disabled(!store.canLowerOctave)
+
+                Text("\(store.octave)")
+                    .font(.system(.body, design: .rounded).weight(.semibold))
+                    .frame(minWidth: 28)
+
+                Button {
+                    store.send(.octaveStepped(1))
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .buttonStyle(.bordered)
+                .disabled(!store.canRaiseOctave)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.card)
-        .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
+        .cardStyle()
     }
 
     private func inversionLabel(_ inversion: Int) -> String {
