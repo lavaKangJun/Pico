@@ -129,7 +129,11 @@ public struct ChordFinderView: View {
                 Button {
                     store.send(.playButtonTapped)
                 } label: {
-                    Label("들어보기", systemImage: "play.fill")
+                    Label {
+                        Text("들어보기", bundle: .chordFeature)
+                    } icon: {
+                        Image(systemName: "play.fill")
+                    }
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -137,33 +141,37 @@ public struct ChordFinderView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(Theme.accent)
 
-                Picker("재생 방식", selection: $store.style) {
+                Picker(selection: $store.style) {
                     ForEach(PlaybackStyle.allCases) { style in
                         Image(systemName: style.systemImage).tag(style)
                     }
+                } label: {
+                    Text("재생 방식", bundle: .chordFeature)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 110)
             }
 
             HStack {
-                Text("전위")
+                Text("전위", bundle: .chordFeature)
                     .font(.subheadline.weight(.medium))
                 Spacer()
-                Picker("전위", selection: .init(
+                Picker(selection: .init(
                     get: { store.inversion },
                     set: { store.send(.inversionTapped($0)) }
                 )) {
                     ForEach(store.inversionOptions, id: \.self) { inversion in
                         Text(inversionLabel(inversion)).tag(inversion)
                     }
+                } label: {
+                    Text("전위", bundle: .chordFeature)
                 }
                 .pickerStyle(.segmented)
                 .frame(maxWidth: 220)
             }
 
             HStack {
-                Text("옥타브")
+                Text("옥타브", bundle: .chordFeature)
                     .font(.subheadline.weight(.medium))
                 Spacer()
                 Button {
@@ -192,10 +200,10 @@ public struct ChordFinderView: View {
 
     private func inversionLabel(_ inversion: Int) -> String {
         switch inversion {
-        case 0: "기본"
-        case 1: "1전위"
-        case 2: "2전위"
-        default: "\(inversion)전위"
+        case 0: localized("기본")
+        case 1: localized("1전위")
+        case 2: localized("2전위")
+        default: localized("3전위")
         }
     }
 
@@ -203,13 +211,15 @@ public struct ChordFinderView: View {
 
     private var qualityPicker: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Picker("분류", selection: .init(
+            Picker(selection: .init(
                 get: { store.category },
                 set: { store.send(.categoryTapped($0)) }
             )) {
                 ForEach(ChordQuality.Category.allCases) { category in
                     Text(category.displayName).tag(category)
                 }
+            } label: {
+                Text("분류", bundle: .chordFeature)
             }
             .pickerStyle(.segmented)
 

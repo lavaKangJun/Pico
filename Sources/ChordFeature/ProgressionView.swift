@@ -20,7 +20,7 @@ public struct ProgressionView: View {
             .padding(16)
         }
         .background(Theme.groupedBackground)
-        .navigationTitle("코드 진행")
+        .navigationTitle(Text("코드 진행", bundle: .chordFeature))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -101,10 +101,11 @@ public struct ProgressionView: View {
                 Button {
                     store.send(store.isPlaying ? .stopButtonTapped : .playAllButtonTapped)
                 } label: {
-                    Label(
-                        store.isPlaying ? "정지" : "진행 듣기",
-                        systemImage: store.isPlaying ? "stop.fill" : "play.fill"
-                    )
+                    Label {
+                        Text(store.isPlaying ? "정지" : "진행 듣기", bundle: .chordFeature)
+                    } icon: {
+                        Image(systemName: store.isPlaying ? "stop.fill" : "play.fill")
+                    }
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
@@ -118,7 +119,7 @@ public struct ProgressionView: View {
                     .foregroundStyle(.secondary)
                 Slider(value: $store.tempo, in: 50 ... 160, step: 1)
                     .tint(Theme.accent)
-                Text("\(Int(store.tempo)) BPM")
+                Text(verbatim: "\(Int(store.tempo)) BPM")
                     .font(.system(.footnote, design: .rounded).weight(.medium))
                     .monospacedDigit()
                     .frame(width: 66, alignment: .trailing)
@@ -147,7 +148,7 @@ public struct ProgressionView: View {
                     prefersFlats: chord.prefersFlatSpelling
                 )
             } else {
-                Text("코드를 눌러 구성음을 확인해 보세요.")
+                Text("코드를 눌러 구성음을 확인해 보세요.", bundle: .chordFeature)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -162,7 +163,7 @@ public struct ProgressionView: View {
     private var keyPicker: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("조성")
+                Text("조성", bundle: .chordFeature)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
                 Spacer()

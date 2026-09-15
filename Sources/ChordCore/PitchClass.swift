@@ -33,7 +33,7 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
 
     /// 조표 성향에 맞춘 계이름.
     public func solfege(preferringFlats: Bool) -> String {
-        preferringFlats ? Self.flatSolfege[rawValue] : Self.sharpSolfege[rawValue]
+        localized(preferringFlats ? Self.flatSolfege[rawValue] : Self.sharpSolfege[rawValue])
     }
 
     /// 검은 건반 여부.

@@ -6,6 +6,10 @@ private let bundleIDPrefix = "com.lavakangjun.pico"
 private let deploymentTargets: DeploymentTargets = .iOS("17.0")
 private let destinations: Destinations = [.iPhone, .iPad]
 
+/// 한국어로 쓰고 영어·일본어·중국어(간체)로 번역한다.
+private let developmentRegion = "ko"
+private let knownRegions = ["ko", "en", "ja", "zh-Hans"]
+
 private let baseSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0",
     "SWIFT_STRICT_CONCURRENCY": "complete",
@@ -27,6 +31,8 @@ private func module(
         deploymentTargets: deploymentTargets,
         infoPlist: .default,
         sources: ["Sources/\(name)/**"],
+        // 모듈마다 자기 String Catalog을 들고 다닌다. (Bundle.module로 읽는다)
+        resources: ["Sources/\(name)/Resources/**"],
         dependencies: dependencies
     )
 }
@@ -52,6 +58,10 @@ private func testTarget(
 let project = Project(
     name: "Pico",
     organizationName: "lavaKangJun",
+    options: .options(
+        defaultKnownRegions: knownRegions,
+        developmentRegion: developmentRegion
+    ),
     packages: [
         .remote(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
@@ -74,6 +84,8 @@ let project = Project(
                     "UIInterfaceOrientationPortrait",
                 ],
                 "ITSAppUsesNonExemptEncryption": false,
+                // 번역 리소스는 모듈 번들에 있으므로, 앱이 지원하는 언어를 여기서 알린다.
+                "CFBundleLocalizations": .array(knownRegions.map { .string($0) }),
             ]),
             sources: ["Sources/App/**"],
             resources: ["Resources/**"],

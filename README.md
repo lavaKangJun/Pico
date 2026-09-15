@@ -12,13 +12,28 @@
 
 소리는 사운드폰트 없이 `AVAudioEngine` 위에서 배음을 쌓아 만든다. (`ChordSynthesizer`)
 
+## 언어
+
+한국어로 쓰고 영어·일본어·중국어(간체)를 지원한다. 번역은 모듈마다 자기 String Catalog을
+들고 다니고(`Sources/<모듈>/Resources/Localizable.xcstrings`), 키는 한국어 원문을 그대로 쓴다.
+
+SwiftUI의 `Text`는 기본적으로 메인 번들을 보기 때문에, 모듈 안에서는 번들을 직접 지정한다.
+
+```swift
+Text("들어보기", bundle: .chordFeature)   // 뷰
+localized("마이너 세븐스")                  // 모델 (NSLocalizedString 래퍼)
+```
+
+지원 언어는 `Project.swift`의 `knownRegions`와 앱 Info.plist의 `CFBundleLocalizations`
+양쪽에 선언돼 있다. 언어를 추가하려면 두 곳과 각 String Catalog에 번역을 넣으면 된다.
+
 ## 구조
 
 ```
 Sources/
   App/            앱 진입점 (단일 Store)
-  ChordFeature/   TCA 리듀서 + SwiftUI 뷰
-  ChordCore/      음악 이론 도메인 + 오디오 의존성
+  ChordFeature/   TCA 리듀서 + SwiftUI 뷰 + UI 문구 번역
+  ChordCore/      음악 이론 도메인 + 오디오 의존성 + 음악 용어 번역
 Tests/
   ChordCoreTests/     코드/진행 계산 (Swift Testing)
   ChordFeatureTests/  리듀서 (TestStore)

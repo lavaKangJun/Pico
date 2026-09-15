@@ -9,8 +9,8 @@ public enum Tonality: String, CaseIterable, Sendable, Hashable, Codable, Identif
 
     public var displayName: String {
         switch self {
-        case .major: "메이저"
-        case .minor: "마이너"
+        case .major: localized("장조")
+        case .minor: localized("단조")
         }
     }
 
@@ -41,16 +41,23 @@ public struct ChordProgression: Sendable, Hashable, Codable, Identifiable {
     }
 
     public let id: String
-    public let name: String
-    /// 어떤 곡에서 들어봤는지 같은 한 줄 설명.
-    public let summary: String
+    /// 진행 이름의 번역 키.
+    let nameKey: String
+    /// 한 줄 설명의 번역 키.
+    let summaryKey: String
     public let tonality: Tonality
     public let steps: [Step]
 
+    /// 현재 언어로 번역된 진행 이름.
+    public var name: String { localized(nameKey) }
+
+    /// 어떤 곡에서 들어봤는지 같은 한 줄 설명.
+    public var summary: String { localized(summaryKey) }
+
     public init(id: String, name: String, summary: String, tonality: Tonality, steps: [Step]) {
         self.id = id
-        self.name = name
-        self.summary = summary
+        nameKey = name
+        summaryKey = summary
         self.tonality = tonality
         self.steps = steps
     }

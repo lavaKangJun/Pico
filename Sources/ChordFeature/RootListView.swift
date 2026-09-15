@@ -20,7 +20,7 @@ public struct RootListView: View {
                         }
                     }
                 } header: {
-                    Text("루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.")
+                    Text("루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.", bundle: .chordFeature)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .textCase(nil)
@@ -28,7 +28,7 @@ public struct RootListView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("루트 코드")
+            .navigationTitle(Text("루트 코드", bundle: .chordFeature))
         } destination: { store in
             ChordFinderView(store: store)
         }
@@ -48,7 +48,7 @@ public struct RootListView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(pitch.solfege)
                     .font(.body.weight(.medium))
-                Text("메이저 3화음 · \(pitch.majorTriadPreview)")
+                Text("메이저 3화음 · \(pitch.majorTriadPreview)", bundle: .chordFeature)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

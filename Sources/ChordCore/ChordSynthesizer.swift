@@ -12,8 +12,8 @@ public enum PlaybackStyle: String, CaseIterable, Sendable, Hashable, Codable, Id
 
     public var displayName: String {
         switch self {
-        case .block: "동시에"
-        case .arpeggio: "아르페지오"
+        case .block: localized("동시에")
+        case .arpeggio: localized("아르페지오")
         }
     }
 

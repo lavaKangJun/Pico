@@ -4,8 +4,8 @@ import Foundation
 public struct ChordQuality: Sendable, Hashable, Codable, Identifiable {
     /// 코드 심볼에 붙는 접미사. 메이저는 빈 문자열이다. (예: `m7`)
     public let symbol: String
-    /// 한국어 표시 이름. (예: `마이너 세븐스`)
-    public let displayName: String
+    /// 표시 이름의 번역 키. 한국어 원문을 그대로 쓴다.
+    let nameKey: String
     /// 분류 탭.
     public let category: Category
     /// 루트를 0으로 했을 때의 반음 간격.
@@ -13,9 +13,12 @@ public struct ChordQuality: Sendable, Hashable, Codable, Identifiable {
 
     public var id: String { symbol.isEmpty ? "maj" : symbol }
 
+    /// 현재 언어로 번역된 표시 이름. (예: `마이너 세븐스`)
+    public var displayName: String { localized(nameKey) }
+
     public init(symbol: String, displayName: String, category: Category, intervals: [Int]) {
         self.symbol = symbol
-        self.displayName = displayName
+        nameKey = displayName
         self.category = category
         self.intervals = intervals
     }
@@ -35,10 +38,10 @@ public struct ChordQuality: Sendable, Hashable, Codable, Identifiable {
 
         public var displayName: String {
             switch self {
-            case .triad: "3화음"
-            case .sixth: "6화음"
-            case .seventh: "7화음"
-            case .tension: "텐션"
+            case .triad: localized("3화음")
+            case .sixth: localized("6화음")
+            case .seventh: localized("7화음")
+            case .tension: localized("텐션")
             }
         }
     }

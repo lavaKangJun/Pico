@@ -28,8 +28,8 @@ public struct AppFeature: Sendable {
 
         public var title: String {
             switch self {
-            case .finder: "코드 찾기"
-            case .progression: "코드 진행"
+            case .finder: localized("코드 찾기")
+            case .progression: localized("코드 진행")
             }
         }
 
