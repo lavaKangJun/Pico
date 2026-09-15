@@ -101,8 +101,12 @@ public struct PianoKeyboardView: View {
                 .fill(isOn ? color(for: note) : Color(red: 0.13, green: 0.13, blue: 0.15))
             if isOn {
                 Text(PitchClass(midiNote: note).name(preferringFlats: prefersFlats))
-                    .font(.system(size: min(9, width * 0.4), weight: .semibold))
+                    // 검은 건반은 좁아서 글자가 너무 작아진다. 폭의 대부분을 쓰고 넘치면 줄인다.
+                    .font(.system(size: min(13, width * 0.72), weight: .semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundStyle(.white)
+                    .padding(.horizontal, 1)
                     .padding(.bottom, 6)
             }
         }
