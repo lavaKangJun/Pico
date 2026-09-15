@@ -14,12 +14,6 @@ public struct RootListView: View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    Text("음을 고르면 그 음으로 만드는 코드를 볼 수 있어요.", bundle: .chordFeature)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 4)
-
                     ForEach(PitchClass.allCases) { pitch in
                         NavigationLink(state: ChordFinderFeature.State(root: pitch.defaultNoteName)) {
                             row(for: pitch)
