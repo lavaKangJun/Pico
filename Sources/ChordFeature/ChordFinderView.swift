@@ -15,6 +15,7 @@ public struct ChordFinderView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     summaryCard
+                    AdBannerView(horizontalInset: 16)
                     keyboardCard
                     qualityPicker
                 }

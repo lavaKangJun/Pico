@@ -13,6 +13,19 @@
 
 소리는 사운드폰트 없이 `AVAudioEngine` 위에서 배음을 쌓아 만든다. (`ChordSynthesizer`)
 
+## 광고
+
+코드 찾기 화면의 코드 카드 바로 아래에 AdMob 배너를 띄운다. (`AdBannerView`)
+창 너비에 맞춘 앵커드 어댑티브 배너이고, 광고를 못 받으면 자리를 접어 빈 카드를 남기지 않는다.
+
+> **배포 전에 바꿔야 할 것**
+> - `Sources/ChordFeature/AdBannerView.swift`의 `AdMob.bannerAdUnitID`
+> - `Project.swift`의 `GADApplicationIdentifier`
+> - `Project.swift`의 `SKAdNetworkItems` — 구글 문서의 전체 목록으로 채운다
+>
+> 지금 들어 있는 값은 모두 구글이 공개한 **테스트 ID**라 실제 광고도 수익도 나가지 않는다.
+> 화면에 뜨는 "Test mode" 배지도 실 단위로 바꾸면 사라진다.
+
 ## 언어
 
 한국어로 쓰고 영어·일본어·중국어(간체/번체)를 지원한다. 번역은 모듈마다 자기 String Catalog을

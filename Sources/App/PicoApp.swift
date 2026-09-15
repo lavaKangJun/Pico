@@ -13,6 +13,10 @@ struct PicoApp: App {
         #endif
     }
 
+    init() {
+        AdMob.start()
+    }
+
     var body: some Scene {
         WindowGroup {
             AppView(store: Self.store)
