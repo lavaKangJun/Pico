@@ -81,14 +81,26 @@ public struct ChordFinderView: View {
 
     private var summaryCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline) {
+            HStack(alignment: .top, spacing: 12) {
                 Text(store.symbol)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
                     .contentTransition(.numericText())
-                Spacer()
-                Text(store.quality.displayName)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+
+                Spacer(minLength: 0)
+
+                VStack(alignment: .trailing, spacing: 6) {
+                    // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 직접 고르게 한다.
+                    if store.root.enharmonic != nil {
+                        spellingPicker
+                    }
+                    Text(store.quality.displayName)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                }
             }
 
             FlowLayout(spacing: 8) {
@@ -113,25 +125,25 @@ public struct ChordFinderView: View {
             Text(store.chord.solfegeNames.joined(separator: " · "))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-
-            // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 직접 고르게 한다.
-            if store.root.enharmonic != nil {
-                Picker(selection: .init(
-                    get: { store.root },
-                    set: { store.send(.rootTapped($0)) }
-                )) {
-                    ForEach(store.root.pitch.noteNames) { spelling in
-                        Text(spelling.name).tag(spelling)
-                    }
-                } label: {
-                    Text("표기", bundle: .chordFeature)
-                }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 170)
-            }
         }
         .cardStyle()
         .animation(.easeOut(duration: 0.2), value: store.symbol)
+    }
+
+    /// C♯과 D♭처럼 같은 소리를 어떻게 적을지 고르는 토글.
+    private var spellingPicker: some View {
+        Picker(selection: .init(
+            get: { store.root },
+            set: { store.send(.rootTapped($0)) }
+        )) {
+            ForEach(store.root.pitch.noteNames) { spelling in
+                Text(spelling.name).tag(spelling)
+            }
+        } label: {
+            Text("표기", bundle: .chordFeature)
+        }
+        .pickerStyle(.segmented)
+        .frame(width: 124)
     }
 
     // MARK: - 건반과 재생
