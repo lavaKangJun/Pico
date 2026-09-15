@@ -12,22 +12,24 @@ public struct RootListView: View {
 
     public var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            List {
-                Section {
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    Text("루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.", bundle: .chordFeature)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 4)
+
                     ForEach(PitchClass.allCases) { pitch in
                         NavigationLink(state: ChordFinderFeature.State(root: pitch)) {
                             row(for: pitch)
                         }
+                        .buttonStyle(CardButtonStyle())
                     }
-                } header: {
-                    Text("루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.", bundle: .chordFeature)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .textCase(nil)
-                        .padding(.bottom, 4)
                 }
+                .padding(16)
             }
-            .listStyle(.insetGrouped)
+            .background(Theme.groupedBackground)
             .navigationTitle(Text("코드 찾기", bundle: .chordFeature))
         } destination: { store in
             ChordFinderView(store: store)
@@ -48,14 +50,15 @@ public struct RootListView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(pitch.solfege)
                     .font(.body.weight(.medium))
+                    .foregroundStyle(.primary)
                 Text("메이저 3화음 · \(pitch.majorTriadPreview)", bundle: .chordFeature)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
-            Spacer()
+            Spacer(minLength: 0)
         }
-        .padding(.vertical, 4)
+        .cardStyle()
     }
 }
 
