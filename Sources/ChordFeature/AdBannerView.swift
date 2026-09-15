@@ -48,11 +48,9 @@ public struct AdBannerView: View {
                     onFailure: { phase = .failed }
                 )
                 .frame(width: size.size.width, height: height(default: size.size.height))
-                // 크리에이티브가 슬롯보다 작을 때가 많아, 여백을 줘서 카드 안에 앉은 모양으로 만든다.
-                .padding(.vertical, 12)
-                // 다른 카드와 같은 모양으로 맞추고, 광고가 덜 채운 자리는 카드 색으로 덮는다.
+                // 배너 크기에 딱 맞는 네모난 자리. 둥근 모서리를 주면 광고가 잘려 보인다.
                 .background(Theme.card)
-                .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
+                .clipShape(Rectangle())
             }
         }
         .animation(.easeOut(duration: 0.2), value: phase)
@@ -78,12 +76,29 @@ public struct AdBannerView: View {
 private final class ClearBackgroundBannerView: BannerView {
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = .clear
-        isOpaque = false
-        for subview in subviews {
-            subview.backgroundColor = .clear
-            subview.isOpaque = false
+        clearBackground(of: self)
+    }
+
+    /// 검게 칠해진 배경만 골라 지운다. 광고 자체가 쓰는 색은 건드리지 않는다.
+    private func clearBackground(of view: UIView, depth: Int = 0) {
+        if isBlack(view.backgroundColor) || isBlack(view.layer.backgroundColor.map(UIColor.init(cgColor:))) {
+            view.backgroundColor = .clear
+            view.layer.backgroundColor = nil
+            view.isOpaque = false
         }
+        // 광고 내용까지 헤집지 않도록 몇 단계만 훑는다.
+        guard depth < 3 else { return }
+        for subview in view.subviews {
+            clearBackground(of: subview, depth: depth + 1)
+        }
+    }
+
+    private func isBlack(_ color: UIColor?) -> Bool {
+        guard let color else { return false }
+        var white: CGFloat = 0
+        var alpha: CGFloat = 0
+        guard color.getWhite(&white, alpha: &alpha) else { return false }
+        return white == 0 && alpha > 0
     }
 }
 
