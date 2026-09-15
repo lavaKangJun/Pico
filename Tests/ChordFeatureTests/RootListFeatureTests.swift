@@ -52,10 +52,11 @@ struct RootListFeatureTests {
         #expect(store.state.openedRoot == nil)
     }
 
-    @Test("목록은 12음을 모두 보여 주고 메이저 3화음을 미리 알려 준다")
+    @Test("목록은 음이름 17개를 모두 보여 주고 메이저 3화음을 미리 알려 준다")
     func listsEveryRoot() {
-        #expect(PitchClass.allCases.count == 12)
-        #expect(PitchClass.c.majorTriadPreview == "C E G")
-        #expect(PitchClass.aSharp.majorTriadPreview == "B♭ D F")
+        #expect(NoteName.allCases.count == 17)
+        #expect(NoteName.c.majorTriadPreview == "C E G")
+        #expect(NoteName.bFlat.majorTriadPreview == "B♭ D F")
+        #expect(NoteName.gSharp.majorTriadPreview == "G♯ C D♯")
     }
 }

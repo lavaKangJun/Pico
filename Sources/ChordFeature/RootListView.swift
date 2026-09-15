@@ -20,9 +20,9 @@ public struct RootListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 4)
 
-                    ForEach(PitchClass.allCases) { pitch in
-                        NavigationLink(state: ChordFinderFeature.State(root: pitch)) {
-                            row(for: pitch)
+                    ForEach(NoteName.allCases) { note in
+                        NavigationLink(state: ChordFinderFeature.State(root: note)) {
+                            row(for: note)
                         }
                         .buttonStyle(CardButtonStyle())
                     }
@@ -36,22 +36,22 @@ public struct RootListView: View {
         }
     }
 
-    private func row(for pitch: PitchClass) -> some View {
+    private func row(for note: NoteName) -> some View {
         HStack(spacing: 14) {
-            Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
+            Text(note.name)
                 .font(.system(.title3, design: .rounded).weight(.bold))
-                .foregroundStyle(pitch.isAccidental ? Color.white : Theme.accent)
+                .foregroundStyle(note.isAccidental ? Color.white : Theme.accent)
                 .frame(width: 40, height: 40)
                 .background(
-                    pitch.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
+                    note.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(pitch.solfege)
+                Text(note.solfege)
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
-                Text("메이저 3화음 · \(pitch.majorTriadPreview)", bundle: .chordFeature)
+                Text("메이저 3화음 · \(note.majorTriadPreview)", bundle: .chordFeature)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

@@ -7,7 +7,7 @@ import Foundation
 public struct ChordFinderFeature: Sendable {
     @ObservableState
     public struct State: Equatable {
-        public var root: PitchClass
+        public var root: NoteName
         public var quality: ChordQuality
         public var category: ChordQuality.Category
         public var inversion: Int
@@ -19,7 +19,7 @@ public struct ChordFinderFeature: Sendable {
         public var isWaitingForAd: Bool
 
         public init(
-            root: PitchClass = .c,
+            root: NoteName = .c,
             quality: ChordQuality = .major,
             inversion: Int = 0,
             octave: Int = 4,
@@ -65,7 +65,7 @@ public struct ChordFinderFeature: Sendable {
 
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case rootTapped(PitchClass)
+        case rootTapped(NoteName)
         case categoryTapped(ChordQuality.Category)
         case qualityTapped(ChordQuality)
         case inversionTapped(Int)

@@ -68,7 +68,7 @@ public struct ChordProgression: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 주어진 으뜸음에서의 실제 코드들.
-    public func chords(inKey tonic: PitchClass) -> [Chord] {
+    public func chords(inKey tonic: NoteName) -> [Chord] {
         steps.map { step in
             Chord(root: tonic.transposed(by: step.semitoneFromTonic), quality: step.quality)
         }

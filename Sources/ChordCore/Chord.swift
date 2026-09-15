@@ -2,22 +2,22 @@ import Foundation
 
 /// 루트 음과 성질로 정의되는 하나의 코드.
 public struct Chord: Sendable, Hashable, Codable, Identifiable {
-    public let root: PitchClass
+    public let root: NoteName
     public let quality: ChordQuality
 
     public var id: String { "\(root.rawValue)-\(quality.id)" }
 
-    public init(root: PitchClass, quality: ChordQuality) {
+    public init(root: NoteName, quality: ChordQuality) {
         self.root = root
         self.quality = quality
     }
 
     /// 루트 표기에 플랫을 쓰는지 여부.
-    public var prefersFlatSpelling: Bool { root.prefersFlatSpelling }
+    public var prefersFlatSpelling: Bool { root.prefersFlats }
 
     /// 코드 심볼. (예: `B♭m7`)
     public var symbol: String {
-        root.name(preferringFlats: prefersFlatSpelling) + quality.symbol
+        root.name + quality.symbol
     }
 
     /// 전위를 반영한 코드 심볼. (예: `Cmaj7/E`)
@@ -32,7 +32,7 @@ public struct Chord: Sendable, Hashable, Codable, Identifiable {
     public var pitches: [PitchClass] {
         var seen = Set<PitchClass>()
         return quality.intervals.compactMap { interval in
-            let pitch = root.transposed(by: interval)
+            let pitch = root.pitch.transposed(by: interval)
             return seen.insert(pitch).inserted ? pitch : nil
         }
     }
@@ -51,7 +51,7 @@ public struct Chord: Sendable, Hashable, Codable, Identifiable {
     public var tones: [Tone] {
         var seen = Set<PitchClass>()
         return quality.intervals.compactMap { interval in
-            let pitch = root.transposed(by: interval)
+            let pitch = root.pitch.transposed(by: interval)
             guard seen.insert(pitch).inserted else { return nil }
             return Tone(
                 semitone: interval,
@@ -71,7 +71,7 @@ public struct Chord: Sendable, Hashable, Codable, Identifiable {
     ///   - octave: 루트가 놓일 옥타브. `4`면 가운데 도(C4 = 60) 기준.
     ///   - inversion: 0이면 기본 위치. 1이면 가장 낮은 음을 한 옥타브 올린다.
     public func midiNotes(octave: Int = 4, inversion: Int = 0) -> [Int] {
-        let rootMIDI = (octave + 1) * 12 + root.rawValue
+        let rootMIDI = (octave + 1) * 12 + root.pitch.rawValue
         var notes = quality.intervals.map { rootMIDI + $0 }
         for index in 0 ..< normalizedInversion(inversion) {
             notes[index % notes.count] += 12
@@ -82,7 +82,7 @@ public struct Chord: Sendable, Hashable, Codable, Identifiable {
     /// 전위했을 때 가장 낮은 음(베이스).
     public func bassNote(inversion: Int) -> PitchClass {
         let notes = midiNotes(inversion: inversion)
-        return PitchClass(midiNote: notes.first ?? root.rawValue)
+        return PitchClass(midiNote: notes.first ?? root.pitch.rawValue)
     }
 
     private func normalizedInversion(_ inversion: Int) -> Int {
@@ -108,7 +108,7 @@ public extension Chord {
     static func matching(pitches: Set<PitchClass>) -> [Chord] {
         guard pitches.count >= 2 else { return [] }
         var matches: [Chord] = []
-        for root in PitchClass.allCases {
+        for root in NoteName.allCases {
             for quality in ChordQuality.all {
                 let chord = Chord(root: root, quality: quality)
                 if Set(chord.pitches) == pitches {

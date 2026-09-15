@@ -144,7 +144,7 @@ public struct ProgressionView: View {
                 }
                 PianoKeyboardView(
                     highlighted: chord.midiNotes(),
-                    rootPitch: chord.root,
+                    rootPitch: chord.root.pitch,
                     prefersFlats: chord.prefersFlatSpelling
                 )
             } else {
@@ -173,12 +173,12 @@ public struct ProgressionView: View {
             }
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 6), spacing: 8) {
-                ForEach(PitchClass.allCases) { pitch in
-                    let isSelected = pitch == store.key
+                ForEach(NoteName.allCases) { note in
+                    let isSelected = note == store.key
                     Button {
-                        store.send(.keyTapped(pitch))
+                        store.send(.keyTapped(note))
                     } label: {
-                        Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
+                        Text(note.name)
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)

@@ -19,10 +19,21 @@ struct ChordTests {
         #expect(chord.midiNotes(octave: 4) == [69, 72, 76, 79])
     }
 
-    @Test("루트에 따라 플랫 표기를 고른다")
-    func flatSpelling() {
-        #expect(Chord(root: .aSharp, quality: .major).symbol == "B♭")
-        #expect(Chord(root: .fSharp, quality: .minor).symbol == "F♯m")
+    @Test("샤프와 플랫은 같은 소리라도 다른 코드로 적는다")
+    func enharmonicSpelling() {
+        let sharp = Chord(root: .aSharp, quality: .major)
+        let flat = Chord(root: .bFlat, quality: .major)
+
+        #expect(sharp.symbol == "A♯")
+        #expect(flat.symbol == "B♭")
+        // 적는 법만 다르고 울리는 소리는 같다.
+        #expect(sharp.midiNotes() == flat.midiNotes())
+        #expect(sharp != flat)
+
+        #expect(Chord(root: .cSharp, quality: .minorSeventh).symbol == "C♯m7")
+        #expect(Chord(root: .dFlat, quality: .minorSeventh).symbol == "D♭m7")
+        #expect(Chord(root: .gSharp, quality: .major).symbol == "G♯")
+        #expect(Chord(root: .aFlat, quality: .major).symbol == "A♭")
     }
 
     @Test("전위는 아래 음을 한 옥타브씩 올린다")
@@ -61,8 +72,10 @@ struct ChordTests {
     func chordSolfege() {
         #expect(Chord(root: .fSharp, quality: .major).pitchNames == ["F♯", "A♯", "C♯"])
         #expect(Chord(root: .fSharp, quality: .major).solfegeNames == ["파♯", "라♯", "도♯"])
-        #expect(Chord(root: .aSharp, quality: .major).pitchNames == ["B♭", "D", "F"])
-        #expect(Chord(root: .aSharp, quality: .major).solfegeNames == ["시♭", "레", "파"])
+        #expect(Chord(root: .bFlat, quality: .major).pitchNames == ["B♭", "D", "F"])
+        #expect(Chord(root: .bFlat, quality: .major).solfegeNames == ["시♭", "레", "파"])
+        // 루트를 A♯으로 적으면 구성음도 샤프로 적는다.
+        #expect(Chord(root: .aSharp, quality: .major).pitchNames == ["A♯", "D", "F"])
     }
 
     @Test("구성음으로 코드를 되찾을 수 있다")
@@ -131,6 +144,26 @@ struct ChordProgressionTests {
         let chords = ChordProgression.twoFiveOne.chords(inKey: .c)
         #expect(chords.map(\.symbol) == ["Dm7", "G7", "Cmaj7"])
         #expect(ChordProgression.twoFiveOne.numeralDescription == "ii7 – V7 – IΔ7")
+    }
+
+    @Test("음이름 17개가 모두 코드 루트로 쓰인다")
+    func everyNoteNameIsAvailable() {
+        #expect(NoteName.allCases.count == 17)
+        // 검은 건반은 샤프와 플랫 두 가지로 적을 수 있다.
+        let blackKeyNames = NoteName.allCases.filter(\.isAccidental)
+        #expect(blackKeyNames.count == 10)
+        #expect(Set(NoteName.allCases.map(\.pitch)).count == 12)
+        #expect(NoteName.allCases.map(\.name).contains("C♯"))
+        #expect(NoteName.allCases.map(\.name).contains("G♯"))
+        #expect(NoteName.allCases.map(\.name).contains("G♭"))
+    }
+
+    @Test("이조하면 샤프는 샤프로, 플랫은 플랫으로 남는다")
+    func transposeKeepsSpelling() {
+        #expect(NoteName.cSharp.transposed(by: 2) == .dSharp)
+        #expect(NoteName.dFlat.transposed(by: 2) == .eFlat)
+        #expect(NoteName.c.transposed(by: 1) == .cSharp)
+        #expect(NoteName.g.transposed(by: 7) == .d)
     }
 
     @Test("모든 진행의 id는 겹치지 않는다")

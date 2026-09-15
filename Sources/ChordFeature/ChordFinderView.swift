@@ -35,15 +35,15 @@ public struct ChordFinderView: View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(PitchClass.allCases) { pitch in
-                        let isSelected = pitch == store.root
+                    ForEach(NoteName.allCases) { note in
+                        let isSelected = note == store.root
                         Button {
-                            store.send(.rootTapped(pitch))
+                            store.send(.rootTapped(note))
                         } label: {
                             VStack(spacing: 1) {
-                                Text(pitch.name(preferringFlats: pitch.prefersFlatSpelling))
+                                Text(note.name)
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                Text(pitch.solfege)
+                                Text(note.solfege)
                                     .font(.caption2)
                                     .opacity(0.7)
                             }
@@ -56,7 +56,7 @@ public struct ChordFinderView: View {
                             .foregroundStyle(isSelected ? Color.white : Color.primary)
                         }
                         .buttonStyle(.plain)
-                        .id(pitch)
+                        .id(note)
                     }
                 }
                 .padding(.horizontal, 16)
@@ -122,7 +122,7 @@ public struct ChordFinderView: View {
         VStack(spacing: 14) {
             PianoKeyboardView(
                 highlighted: store.midiNotes,
-                rootPitch: store.root,
+                rootPitch: store.root.pitch,
                 prefersFlats: store.chord.prefersFlatSpelling,
                 onKeyTap: { note in store.send(.keyTapped(note)) }
             )
@@ -248,7 +248,7 @@ public struct ChordFinderView: View {
                         store.send(.qualityTapped(quality))
                     } label: {
                         VStack(spacing: 2) {
-                            Text(store.root.name(preferringFlats: store.chord.prefersFlatSpelling) + quality.symbol)
+                            Text(store.root.name + quality.symbol)
                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.7)

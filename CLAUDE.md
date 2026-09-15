@@ -123,8 +123,12 @@ let store = TestStore(initialState: .init()) { Feature() } withDependencies: {
 
 ### 도메인
 
-- `PitchClass` — 12음. 루트마다 샤프/플랫 표기 성향(`prefersFlatSpelling`)이 정해져 있고,
-  음이름·계이름 모두 이 성향을 따라간다. 표기가 어긋나면 이 값을 먼저 본다.
+- `PitchClass` — 12음. "어떤 소리인가"만 담당한다.
+- `NoteName` — 17개 음이름. "어떻게 적는가"를 담당한다. C♯과 D♭은 같은 건반이지만
+  코드 이름도 구성음 표기도 달라 따로 둔다. 코드의 루트는 항상 `NoteName`이고,
+  구성음 표기는 루트의 `prefersFlats`를 따라간다.
+  - 알려진 한계: 표기가 피치 클래스 기준이라 C♯ 메이저를 `C♯ F G♯`로 적는다.
+    이론상 맞는 표기는 `C♯ E♯ G♯`다. 음이름을 글자(letter) 기준으로 다시 세우면 고칠 수 있다.
 - `ChordQuality` — 28가지 코드 성질을 반음 간격 배열로 정의. `nameKey`가 번역 키다.
 - `Chord` — 루트 + 성질. 전위는 낮은 음부터 한 옥타브씩 올리는 방식이다.
 - `ChordProgression` — 으뜸음으로부터의 반음 거리로 정의해 어떤 조로든 이조된다.

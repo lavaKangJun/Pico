@@ -15,7 +15,7 @@ public struct RootListFeature: Sendable {
         }
 
         /// 지금 열려 있는 코드 찾기 화면의 루트.
-        public var openedRoot: PitchClass? { path.last?.root }
+        public var openedRoot: NoteName? { path.last?.root }
     }
 
     public enum Action: Equatable {
@@ -37,7 +37,7 @@ public struct RootListFeature: Sendable {
     }
 }
 
-public extension PitchClass {
+public extension NoteName {
     /// 리스트에서 미리 보여 줄 메이저 3화음 구성음. (예: `C E G`)
     var majorTriadPreview: String {
         Chord(root: self, quality: .major).pitchNames.joined(separator: " ")

@@ -7,7 +7,7 @@ import Foundation
 public struct ProgressionFeature: Sendable {
     @ObservableState
     public struct State: Equatable {
-        public var key: PitchClass
+        public var key: NoteName
         public var progression: ChordProgression
         public var selectedIndex: Int?
         public var isPlaying: Bool
@@ -15,7 +15,7 @@ public struct ProgressionFeature: Sendable {
         public var tempo: Double
 
         public init(
-            key: PitchClass = .c,
+            key: NoteName = .c,
             progression: ChordProgression = .pop,
             tempo: Double = 92
         ) {
@@ -37,13 +37,13 @@ public struct ProgressionFeature: Sendable {
         public var chordDuration: Double { 120.0 / tempo }
 
         public var keyName: String {
-            key.name(preferringFlats: key.prefersFlatSpelling) + progression.tonality.suffix
+            key.name + progression.tonality.suffix
         }
     }
 
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case keyTapped(PitchClass)
+        case keyTapped(NoteName)
         case progressionTapped(ChordProgression)
         case chordTapped(Int)
         case playAllButtonTapped
