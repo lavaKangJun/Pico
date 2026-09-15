@@ -13,9 +13,7 @@ public struct ChordFinderFeature: Sendable {
         public var inversion: Int
         public var octave: Int
         public var style: PlaybackStyle
-        /// 이미 열어 둔 분류. 3화음과 처음 띄운 분류는 그냥 볼 수 있다.
-        public var unlockedCategories: Set<ChordQuality.Category>
-        /// true면 잠긴 분류를 열 때 전면 광고를 먼저 보여 준다.
+        /// true면 잠긴 분류를 누를 때마다 전면 광고를 먼저 보여 준다.
         public var requiresAdForLockedCategories: Bool
         /// 광고를 띄우고 닫히기를 기다리는 중.
         public var isWaitingForAd: Bool
@@ -34,19 +32,18 @@ public struct ChordFinderFeature: Sendable {
             self.inversion = inversion
             self.octave = octave
             self.style = style
-            unlockedCategories = [.triad, quality.category]
             self.requiresAdForLockedCategories = requiresAdForLockedCategories
             isWaitingForAd = false
         }
 
-        /// 그냥 열 수 있는 분류인지.
-        public func isUnlocked(_ category: ChordQuality.Category) -> Bool {
-            !requiresAdForLockedCategories || unlockedCategories.contains(category)
+        /// 이 분류를 보려면 광고를 봐야 하는지. 누를 때마다 다시 봐야 한다.
+        public func requiresAd(for category: ChordQuality.Category) -> Bool {
+            requiresAdForLockedCategories && category != .triad
         }
 
-        /// 아직 광고를 봐야 하는 분류.
+        /// 광고를 봐야 열리는 분류.
         public var lockedCategories: [ChordQuality.Category] {
-            ChordQuality.Category.allCases.filter { !isUnlocked($0) }
+            ChordQuality.Category.allCases.filter { requiresAd(for: $0) }
         }
 
         public var chord: Chord { Chord(root: root, quality: quality) }
@@ -99,8 +96,8 @@ public struct ChordFinderFeature: Sendable {
 
             case let .categoryTapped(category):
                 guard state.category != category else { return .none }
-                guard state.isUnlocked(category) else {
-                    // 잠긴 분류는 광고를 끝까지 본 뒤에 열린다.
+                guard !state.requiresAd(for: category) else {
+                    // 3화음이 아닌 분류는 누를 때마다 광고를 끝까지 봐야 열린다.
                     state.isWaitingForAd = true
                     return .run { send in
                         let watched = await interstitialAd.show()
@@ -113,7 +110,6 @@ public struct ChordFinderFeature: Sendable {
             case let .interstitialFinished(category, watched):
                 state.isWaitingForAd = false
                 guard watched else { return .none }
-                state.unlockedCategories.insert(category)
                 state.open(category)
                 return .none
 

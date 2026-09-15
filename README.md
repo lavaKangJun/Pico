@@ -14,8 +14,8 @@
 소리는 Play 버튼을 눌렀을 때만 난다. 루트나 코드를 고르는 중에는 울리지 않는다.
 사운드폰트 없이 `AVAudioEngine` 위에서 배음을 쌓아 만든다. (`ChordSynthesizer`)
 
-6화음·7화음·텐션 분류는 전면 광고를 한 번 보면 열린다.
-`AdMob.showsInterstitialForLockedCategories`로 끌 수 있다.
+6화음·7화음·텐션 분류는 누를 때마다 전면 광고를 봐야 열린다. 3화음은 광고 없이 볼 수 있다.
+`AdMob.showsInterstitialForLockedCategories`는 개발 중에 광고를 건너뛰려는 디버깅 스위치다.
 
 ## 광고
 

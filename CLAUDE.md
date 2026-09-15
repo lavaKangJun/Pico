@@ -178,9 +178,10 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 내려온 크기로 바뀌어서, 비교할 때마다 "요청과 다르다 → 재요청"이 무한히 반복된다.
 요청한 크기는 코디네이터가 따로 들고 있다.
 
-**전면 광고** — 6화음·7화음·텐션 분류를 처음 열 때 (`InterstitialAdClient`).
-한 번 본 분류는 그 화면이 살아 있는 동안 계속 열려 있다.
-`AdMob.showsInterstitialForLockedCategories`를 false로 두면 잠금 자체가 사라진다.
+**전면 광고** — 6화음·7화음·텐션 분류를 누를 때마다 (`InterstitialAdClient`).
+한 번 봤다고 열어 두지 않는다. 3화음만 광고 없이 오간다.
+`AdMob.showsInterstitialForLockedCategories`는 개발 중에 광고를 건너뛰려고 두는
+디버깅 스위치다. 배포 빌드에서는 true여야 한다.
 
 전면 광고를 띄우는 `InterstitialPresenter`는 `@MainActor`다. 의존성의 `liveValue` 초기화는
 메인 액터가 아닌 곳에서 도니, 거기서 인스턴스를 만들면 실행 즉시 크래시한다.

@@ -14,8 +14,10 @@ public enum AdMob {
     /// 전면 광고 단위 ID. 이것도 구글 테스트 단위다.
     public static let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910"
 
-    /// true면 6화음·7화음·텐션을 처음 열 때 전면 광고를 먼저 보여 준다.
-    /// 끄고 싶으면 false로 두면 잠금 자체가 사라진다.
+    /// true면 6화음·7화음·텐션을 누를 때마다 전면 광고를 먼저 보여 준다.
+    ///
+    /// 개발 중에 광고 없이 화면을 넘겨 보고 싶을 때 false로 내린다.
+    /// 배포 빌드에서는 true여야 한다.
     public static let showsInterstitialForLockedCategories = true
 
     /// 앱을 켤 때 한 번 호출한다. 초기화 전에 요청한 광고는 로드되지 않는다.

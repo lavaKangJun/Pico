@@ -35,8 +35,8 @@ struct ChordFinderFeatureTests {
         await store.finish()
     }
 
-    @Test("잠긴 분류는 전면 광고를 끝까지 봐야 열린다")
-    func unlocksCategoryAfterAd() async {
+    @Test("잠긴 분류는 누를 때마다 전면 광고를 봐야 열린다")
+    func showsAdOnEveryLockedCategoryTap() async {
         let shown = LockIsolated(0)
         let store = TestStore(initialState: ChordFinderFeature.State()) {
             ChordFinderFeature()
@@ -50,30 +50,36 @@ struct ChordFinderFeatureTests {
             )
         }
 
-        #expect(store.state.isUnlocked(.triad))
-        #expect(!store.state.isUnlocked(.tension))
+        #expect(!store.state.requiresAd(for: .triad))
+        #expect(store.state.requiresAd(for: .tension))
 
         await store.send(.categoryTapped(.tension)) {
             $0.isWaitingForAd = true
         }
         await store.receive(.interstitialFinished(category: .tension, watched: true)) {
             $0.isWaitingForAd = false
-            $0.unlockedCategories.insert(.tension)
             $0.category = .tension
             $0.quality = .ninth
         }
         #expect(shown.value == 1)
 
-        // 한 번 열린 분류는 다시 광고를 보지 않는다.
+        // 3화음으로 돌아가는 건 광고 없이 된다.
         await store.send(.categoryTapped(.triad)) {
             $0.category = .triad
             $0.quality = .major
         }
+        #expect(shown.value == 1)
+
+        // 같은 분류라도 다시 누르면 광고를 또 봐야 한다.
         await store.send(.categoryTapped(.tension)) {
+            $0.isWaitingForAd = true
+        }
+        await store.receive(.interstitialFinished(category: .tension, watched: true)) {
+            $0.isWaitingForAd = false
             $0.category = .tension
             $0.quality = .ninth
         }
-        #expect(shown.value == 1)
+        #expect(shown.value == 2)
         await store.finish()
     }
 
@@ -92,7 +98,7 @@ struct ChordFinderFeatureTests {
             $0.isWaitingForAd = false
         }
         #expect(store.state.category == .triad)
-        #expect(!store.state.isUnlocked(.seventh))
+        #expect(store.state.requiresAd(for: .seventh))
         await store.finish()
     }
 
