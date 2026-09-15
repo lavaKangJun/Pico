@@ -69,6 +69,58 @@ Sources/ChordCore/    음악 이론 도메인 + 오디오 + 음악 용어 번역
 `RootListFeature`가 `StackState<ChordFinderFeature.State>`로 네비게이션을 들고 있다.
 루트 목록 → 코드 찾기 화면이 이 스택으로 밀려 들어간다.
 
+### TCA 사용 방식
+
+TCA는 1.26.2로 고정돼 있다 (`.exact`). 리듀서는 아래 모양을 따른다.
+
+```swift
+@Reducer
+public struct ChordFinderFeature: Sendable {   // Sendable을 빼면 .run에서 self를 못 잡는다
+    @ObservableState
+    public struct State: Equatable { ... }
+
+    public enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)     // 뷰에서 $store.style 같은 바인딩을 쓸 때만
+        case rootTapped(PitchClass)            // 나머지는 "사용자가 무엇을 했는가"로 이름 짓는다
+    }
+
+    @Dependency(\.audioPlayer) var audioPlayer
+
+    public var body: some ReducerOf<Self> {
+        BindingReducer()
+        Reduce { state, action in ... }
+    }
+}
+```
+
+- **State는 파생값을 저장하지 않는다.** `chord`, `midiNotes`, `inversionOptions`처럼 루트와
+  성질에서 계산되는 것들은 전부 computed property다. 뷰가 쓰는 표시 문자열도 마찬가지다.
+- **이펙트는 필요한 값만 캡처한다.** `.run { [notes = state.midiNotes] _ in ... }` 식으로
+  state를 통째로 들고 들어가지 않는다.
+- **취소는 `private enum CancelID`** 로 잡는다. `ProgressionFeature`의 순차 재생이 예다.
+- 부수효과는 전부 의존성 뒤에 있다. 오디오는 `AudioPlayerClient`, 시간은
+  `@Dependency(\.continuousClock)`. 리듀서 안에서 직접 `Task.sleep`이나 AVFoundation을
+  부르지 않는다.
+
+네비게이션은 `StackState` + `.forEach(\.path, action: \.path)`로 붙이고, 뷰에서는
+`NavigationStack(path: $store.scope(state: \.path, action: \.path))`와
+`NavigationLink(state:)`를 쓴다. 뷰는 `@Bindable var store: StoreOf<...>`를 들고
+`store.send(...)`로만 말을 건다.
+
+테스트는 Swift Testing + `TestStore`다. 스위트에 `@MainActor`를 붙이고, 상태 변화를
+`store.send(.x) { $0.y = z }`로 남김없이 적는다.
+
+```swift
+let store = TestStore(initialState: .init()) { Feature() } withDependencies: {
+    $0.continuousClock = TestClock()          // 시간이 필요한 이펙트
+    $0.audioPlayer = AudioPlayerClient(...)   // 호출 여부를 확인할 때
+}
+```
+
+`AudioPlayerClient.testValue`는 아무 소리도 내지 않으므로, 재생 자체를 검증하지 않는
+테스트는 의존성을 갈아끼울 필요가 없다. 다만 이펙트가 끝나기를 기다려야 하면
+`await store.finish()`를 붙인다.
+
 ### 도메인
 
 - `PitchClass` — 12음. 루트마다 샤프/플랫 표기 성향(`prefersFlatSpelling`)이 정해져 있고,
@@ -129,6 +181,6 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 
 ## 규칙
 
-- Swift 6 모드에 strict concurrency가 켜져 있다. public 구조체는 암묵적 Sendable을 받지
-  못하므로, 리듀서에는 `: Sendable`을 직접 붙여야 `.run` 클로저에서 self를 잡을 수 있다.
+- Swift 6 모드에 strict concurrency가 켜져 있다. public 타입은 암묵적 Sendable을 받지
+  못한다는 점에 자주 걸린다.
 - 생성물(`*.xcodeproj`, `*.xcworkspace`, `Derived/`)은 커밋하지 않는다.
