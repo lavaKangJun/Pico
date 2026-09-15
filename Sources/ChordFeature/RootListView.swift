@@ -14,7 +14,7 @@ public struct RootListView: View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    Text("루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.", bundle: .chordFeature)
+                    Text("음을 고르면 그 음으로 만드는 코드를 볼 수 있어요.", bundle: .chordFeature)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)

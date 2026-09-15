@@ -128,35 +128,6 @@
         }
       }
     },
-    "루트를 고르면 그 음으로 쌓은 코드를 볼 수 있어요.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick a root to see the chords built on it."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ルート音を選ぶと、その音で作るコードを見られます。"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "选择根音，即可查看以该音构成的和弦。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "選擇根音，即可查看以該音構成的和弦。"
-          }
-        }
-      }
-    },
     "메이저 3화음 · %@": {
       "extractionState": "manual",
       "localizations": {
@@ -530,6 +501,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "記譜"
+          }
+        }
+      }
+    },
+    "음을 고르면 그 음으로 만드는 코드를 볼 수 있어요.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a note to see the chords built on it."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音を選ぶと、その音で作るコードを見られます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择一个音，即可查看以该音构成的和弦。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇一個音，即可查看以該音構成的和弦。"
           }
         }
       }
