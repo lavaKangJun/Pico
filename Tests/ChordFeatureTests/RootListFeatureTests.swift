@@ -52,11 +52,43 @@ struct RootListFeatureTests {
         #expect(store.state.openedRoot == nil)
     }
 
-    @Test("목록은 음이름 17개를 모두 보여 주고 메이저 3화음을 미리 알려 준다")
+    @Test("목록은 12줄이고 같은 소리는 두 표기를 함께 적는다")
     func listsEveryRoot() {
-        #expect(NoteName.allCases.count == 17)
-        #expect(NoteName.c.majorTriadPreview == "C E G")
-        #expect(NoteName.bFlat.majorTriadPreview == "B♭ D F")
-        #expect(NoteName.gSharp.majorTriadPreview == "G♯ C D♯")
+        #expect(PitchClass.allCases.count == 12)
+        #expect(PitchClass.c.combinedName == "C")
+        #expect(PitchClass.cSharp.combinedName == "C♯/D♭")
+        #expect(PitchClass.gSharp.combinedName == "G♯/A♭")
+        #expect(PitchClass.cSharp.combinedSolfege == "도♯ / 레♭")
+    }
+
+    @Test("목록에서 들어가면 관습적으로 흔한 표기로 열린다")
+    func opensWithConventionalSpelling() {
+        #expect(PitchClass.cSharp.defaultNoteName == .dFlat)
+        #expect(PitchClass.dSharp.defaultNoteName == .eFlat)
+        #expect(PitchClass.fSharp.defaultNoteName == .fSharp)
+        #expect(PitchClass.gSharp.defaultNoteName == .aFlat)
+        #expect(PitchClass.aSharp.defaultNoteName == .bFlat)
+        #expect(PitchClass.f.defaultNoteName == .f)
+        #expect(PitchClass.cSharp.defaultNoteName.majorTriadPreview == "D♭ F A♭")
+    }
+
+    @Test("상세 화면에서 표기를 바꿔도 소리는 그대로다")
+    func switchesSpellingInPlace() async {
+        let store = TestStore(initialState: RootListFeature.State(
+            path: StackState([ChordFinderFeature.State(root: .dFlat)])
+        )) {
+            RootListFeature()
+        }
+
+        let before = store.state.path[id: 0]?.midiNotes
+        #expect(store.state.path[id: 0]?.symbol == "D♭")
+
+        await store.send(.path(.element(id: 0, action: .rootTapped(.cSharp)))) {
+            $0.path[id: 0]?.root = .cSharp
+        }
+
+        #expect(store.state.path[id: 0]?.symbol == "C♯")
+        #expect(store.state.path[id: 0]?.midiNotes == before)
+        await store.finish()
     }
 }

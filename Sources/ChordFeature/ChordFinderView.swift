@@ -35,19 +35,21 @@ public struct ChordFinderView: View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(NoteName.allCases) { note in
-                        let isSelected = note == store.root
+                    ForEach(PitchClass.allCases) { pitch in
+                        let isSelected = pitch == store.root.pitch
                         Button {
-                            store.send(.rootTapped(note))
+                            store.send(.rootTapped(pitch.defaultNoteName))
                         } label: {
                             VStack(spacing: 1) {
-                                Text(note.name)
+                                Text(pitch.combinedName)
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                Text(note.solfege)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                Text(pitch.solfege)
                                     .font(.caption2)
                                     .opacity(0.7)
                             }
-                            .frame(width: 52)
+                            .frame(width: 62)
                             .padding(.vertical, 8)
                             .background(
                                 isSelected ? Theme.accent : Color(.tertiarySystemGroupedBackground),
@@ -56,16 +58,16 @@ public struct ChordFinderView: View {
                             .foregroundStyle(isSelected ? Color.white : Color.primary)
                         }
                         .buttonStyle(.plain)
-                        .id(note)
+                        .id(pitch)
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
             }
-            .onAppear { proxy.scrollTo(store.root, anchor: .center) }
-            .onChange(of: store.root) { _, newRoot in
+            .onAppear { proxy.scrollTo(store.root.pitch, anchor: .center) }
+            .onChange(of: store.root.pitch) { _, newPitch in
                 withAnimation(.easeOut(duration: 0.2)) {
-                    proxy.scrollTo(newRoot, anchor: .center)
+                    proxy.scrollTo(newPitch, anchor: .center)
                 }
             }
         }
@@ -111,6 +113,22 @@ public struct ChordFinderView: View {
             Text(store.chord.solfegeNames.joined(separator: " · "))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+
+            // 검은 건반은 같은 소리를 두 가지로 적을 수 있어 직접 고르게 한다.
+            if store.root.enharmonic != nil {
+                Picker(selection: .init(
+                    get: { store.root },
+                    set: { store.send(.rootTapped($0)) }
+                )) {
+                    ForEach(store.root.pitch.noteNames) { spelling in
+                        Text(spelling.name).tag(spelling)
+                    }
+                } label: {
+                    Text("표기", bundle: .chordFeature)
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 170)
+            }
         }
         .cardStyle()
         .animation(.easeOut(duration: 0.2), value: store.symbol)

@@ -127,6 +127,9 @@ let store = TestStore(initialState: .init()) { Feature() } withDependencies: {
 - `NoteName` — 17개 음이름. "어떻게 적는가"를 담당한다. C♯과 D♭은 같은 건반이지만
   코드 이름도 구성음 표기도 달라 따로 둔다. 코드의 루트는 항상 `NoteName`이고,
   구성음 표기는 루트의 `prefersFlats`를 따라간다.
+  - 목록과 루트 스트립은 소리 기준 12줄이고 `PitchClass.combinedName`으로 `C♯/D♭`처럼
+    두 표기를 함께 적는다. 들어가면 `defaultNoteName`(관습적으로 흔한 쪽)으로 열리고,
+    상세 화면의 표기 토글로 바꾼다. 표기를 바꿔도 소리는 그대로다.
   - 알려진 한계: 표기가 피치 클래스 기준이라 C♯ 메이저를 `C♯ F G♯`로 적는다.
     이론상 맞는 표기는 `C♯ E♯ G♯`다. 음이름을 글자(letter) 기준으로 다시 세우면 고칠 수 있다.
 - `ChordQuality` — 28가지 코드 성질을 반음 간격 배열로 정의. `nameKey`가 번역 키다.

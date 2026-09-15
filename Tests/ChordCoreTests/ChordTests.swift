@@ -158,6 +158,18 @@ struct ChordProgressionTests {
         #expect(NoteName.allCases.map(\.name).contains("G♭"))
     }
 
+    @Test("검은 건반은 짝이 되는 표기를 안다")
+    func enharmonicPairs() {
+        #expect(NoteName.cSharp.enharmonic == .dFlat)
+        #expect(NoteName.dFlat.enharmonic == .cSharp)
+        #expect(NoteName.gSharp.enharmonic == .aFlat)
+        #expect(NoteName.c.enharmonic == nil)
+        #expect(NoteName.f.enharmonic == nil)
+        // 두 표기는 늘 샤프, 플랫 순서로 나온다.
+        #expect(PitchClass.gSharp.noteNames == [.gSharp, .aFlat])
+        #expect(PitchClass.g.noteNames == [.g])
+    }
+
     @Test("이조하면 샤프는 샤프로, 플랫은 플랫으로 남는다")
     func transposeKeepsSpelling() {
         #expect(NoteName.cSharp.transposed(by: 2) == .dSharp)

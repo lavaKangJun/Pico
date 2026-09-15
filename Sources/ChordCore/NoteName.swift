@@ -60,6 +60,23 @@ public enum NoteName: String, CaseIterable, Sendable, Hashable, Codable, Identif
     /// 계이름. 음이름과 같은 표기를 쓴다.
     public var solfege: String { pitch.solfege(preferringFlats: prefersFlats) }
 
+    /// 같은 소리를 다르게 적은 음이름. 흰 건반은 짝이 없다.
+    public var enharmonic: NoteName? {
+        switch self {
+        case .cSharp: .dFlat
+        case .dFlat: .cSharp
+        case .dSharp: .eFlat
+        case .eFlat: .dSharp
+        case .fSharp: .gFlat
+        case .gFlat: .fSharp
+        case .gSharp: .aFlat
+        case .aFlat: .gSharp
+        case .aSharp: .bFlat
+        case .bFlat: .aSharp
+        default: nil
+        }
+    }
+
     /// 반음 단위로 옮긴다. 샤프로 적는 음은 샤프로, 플랫으로 적는 음은 플랫으로 남는다.
     public func transposed(by semitones: Int) -> NoteName {
         NoteName.named(pitch.transposed(by: semitones), preferringFlats: prefersFlats)

@@ -49,7 +49,7 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
     /// F, B♭, E♭, A♭, D♭, G♭ 계열은 관습적으로 플랫으로 적는다.
     public var prefersFlatSpelling: Bool {
         switch self {
-        case .dSharp, .gSharp, .aSharp, .cSharp, .f: true
+        case .cSharp, .dSharp, .gSharp, .aSharp: true
         default: false
         }
     }
@@ -58,6 +58,28 @@ public enum PitchClass: Int, CaseIterable, Sendable, Hashable, Codable, Identifi
     public func transposed(by semitones: Int) -> PitchClass {
         let index = ((rawValue + semitones) % 12 + 12) % 12
         return PitchClass(rawValue: index)!
+    }
+
+    /// 이 소리를 적는 방법. 검은 건반은 샤프·플랫 두 가지다.
+    public var noteNames: [NoteName] {
+        let sharp = NoteName.named(self, preferringFlats: false)
+        guard let flat = sharp.enharmonic else { return [sharp] }
+        return [sharp, flat]
+    }
+
+    /// 관습적으로 더 흔히 쓰는 표기. 목록에서 이 표기로 먼저 들어간다.
+    public var defaultNoteName: NoteName {
+        NoteName.named(self, preferringFlats: prefersFlatSpelling)
+    }
+
+    /// 목록에 적는 이름. 검은 건반은 두 표기를 함께 보여 준다. (예: `C♯/D♭`)
+    public var combinedName: String {
+        noteNames.map(\.name).joined(separator: "/")
+    }
+
+    /// 목록에 적는 계이름. (예: `도♯/레♭`)
+    public var combinedSolfege: String {
+        noteNames.map(\.solfege).joined(separator: " / ")
     }
 
     /// MIDI 노트 번호의 피치 클래스.

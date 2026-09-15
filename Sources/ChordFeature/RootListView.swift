@@ -20,9 +20,9 @@ public struct RootListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 4)
 
-                    ForEach(NoteName.allCases) { note in
-                        NavigationLink(state: ChordFinderFeature.State(root: note)) {
-                            row(for: note)
+                    ForEach(PitchClass.allCases) { pitch in
+                        NavigationLink(state: ChordFinderFeature.State(root: pitch.defaultNoteName)) {
+                            row(for: pitch)
                         }
                         .buttonStyle(CardButtonStyle())
                     }
@@ -36,22 +36,26 @@ public struct RootListView: View {
         }
     }
 
-    private func row(for note: NoteName) -> some View {
+    private func row(for pitch: PitchClass) -> some View {
         HStack(spacing: 14) {
-            Text(note.name)
+            // 검은 건반은 C♯/D♭처럼 두 표기를 함께 적는다.
+            Text(pitch.combinedName)
                 .font(.system(.title3, design: .rounded).weight(.bold))
-                .foregroundStyle(note.isAccidental ? Color.white : Theme.accent)
-                .frame(width: 40, height: 40)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .padding(.horizontal, 4)
+                .foregroundStyle(pitch.isAccidental ? Color.white : Theme.accent)
+                .frame(width: 58, height: 40)
                 .background(
-                    note.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
+                    pitch.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                 )
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(note.solfege)
+                Text(pitch.combinedSolfege)
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
-                Text("메이저 3화음 · \(note.majorTriadPreview)", bundle: .chordFeature)
+                Text("메이저 3화음 · \(pitch.defaultNoteName.majorTriadPreview)", bundle: .chordFeature)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

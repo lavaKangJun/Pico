@@ -38,7 +38,9 @@ struct ChordFinderFeatureTests {
     @Test("잠긴 분류는 누를 때마다 전면 광고를 봐야 열린다")
     func showsAdOnEveryLockedCategoryTap() async {
         let shown = LockIsolated(0)
-        let store = TestStore(initialState: ChordFinderFeature.State()) {
+        let store = TestStore(initialState: ChordFinderFeature.State(
+            requiresAdForLockedCategories: true
+        )) {
             ChordFinderFeature()
         } withDependencies: {
             $0.interstitialAd = InterstitialAdClient(
@@ -85,7 +87,9 @@ struct ChordFinderFeatureTests {
 
     @Test("광고를 끝까지 보지 않으면 분류가 바뀌지 않는다")
     func keepsCategoryWhenAdIsSkipped() async {
-        let store = TestStore(initialState: ChordFinderFeature.State()) {
+        let store = TestStore(initialState: ChordFinderFeature.State(
+            requiresAdForLockedCategories: true
+        )) {
             ChordFinderFeature()
         } withDependencies: {
             $0.interstitialAd = InterstitialAdClient(prepare: {}, show: { false })
