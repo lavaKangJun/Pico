@@ -24,13 +24,30 @@ Tests/
 의존 방향은 `App → ChordFeature → ChordCore` 한 방향이다. `ChordCore`는 SwiftUI를 모르고,
 오디오 엔진은 `AudioPlayerClient` 뒤에 숨어 있어 테스트에서는 소리가 나지 않는다.
 
+## 의존성
+
+TCA는 Xcode 네이티브 SPM으로 붙인다. `Project.swift`의 `packages:`에 선언하고 각 타깃에서
+`.package(product:)`로 가져다 쓴다. 패키지 해석은 Xcode가 맡고, 프로젝트 네비게이터의
+Package Dependencies에 나타난다.
+
+```swift
+packages: [
+    .remote(
+        url: "https://github.com/pointfreeco/swift-composable-architecture",
+        requirement: .exact("1.26.2")
+    ),
+]
+```
+
+해석 결과는 Tuist가 저장소 루트의 `.package.resolved`에 남긴다. 생성된 `.xcodeproj`는
+커밋하지 않지만 이 파일은 커밋하므로, 이행 의존성까지 같은 버전으로 재현된다.
+
 ## 개발
 
 Tuist 버전은 `.mise.toml`에 고정돼 있다.
 
 ```sh
 mise install          # Tuist 4.208.0 설치
-tuist install         # SPM 의존성 내려받기
 tuist generate        # Pico.xcworkspace 생성 후 Xcode 열기
 ```
 
@@ -38,11 +55,11 @@ tuist generate        # Pico.xcworkspace 생성 후 Xcode 열기
 
 ```sh
 xcodebuild test -workspace Pico.xcworkspace -scheme Pico-Workspace \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -skipMacroValidation
 ```
 
 ### 알아둘 점
 
-- Tuist 4.174 이하는 SPM traits를 읽지 못해 swift-navigation의 `CasePaths` 의존성이 그래프에서
-  빠진다. 이 프로젝트가 Tuist 4.208을 고정하는 이유다.
-- 모듈은 모두 `.staticFramework`이고, 외부 패키지도 `baseProductType: .staticFramework`로 묶는다.
+- TCA는 매크로 패키지라 Xcode에서 처음 빌드할 때 매크로를 신뢰할지 묻는다. 한 번 허용하면 되고,
+  CI처럼 프롬프트를 띄울 수 없는 환경에서는 위처럼 `-skipMacroValidation`을 붙인다.
+- 앱 모듈은 모두 `.staticFramework`다.

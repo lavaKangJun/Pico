@@ -3,8 +3,10 @@ Derived/
 *.xcodeproj
 *.xcworkspace
 .tuist-cache/
-Tuist/.build/
-Tuist/Dependencies/
+
+## Swift Package Manager
+.swiftpm/
+.build/
 
 ## Xcode
 DerivedData/

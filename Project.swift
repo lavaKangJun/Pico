@@ -52,6 +52,12 @@ private func testTarget(
 let project = Project(
     name: "Pico",
     organizationName: "lavaKangJun",
+    packages: [
+        .remote(
+            url: "https://github.com/pointfreeco/swift-composable-architecture",
+            requirement: .exact("1.26.2")
+        ),
+    ],
     settings: .settings(base: baseSettings),
     targets: [
         .target(
@@ -79,13 +85,13 @@ let project = Project(
             name: "ChordFeature",
             dependencies: [
                 .target(name: "ChordCore"),
-                .external(name: "ComposableArchitecture"),
+                .package(product: "ComposableArchitecture"),
             ]
         ),
         module(
             name: "ChordCore",
             dependencies: [
-                .external(name: "ComposableArchitecture"),
+                .package(product: "ComposableArchitecture"),
             ]
         ),
         testTarget(
