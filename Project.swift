@@ -179,9 +179,8 @@ let project = Project(
                 "ITSAppUsesNonExemptEncryption": false,
                 // 번역 리소스는 모듈 번들에 있으므로, 앱이 지원하는 언어를 여기서 알린다.
                 "CFBundleLocalizations": .array(knownRegions.map { .string($0) }),
-                // TODO: 배포 전에 AdMob 콘솔에서 발급받은 앱 ID로 바꾼다.
-                // 지금 값은 구글이 공개한 테스트 앱 ID라 실제 광고가 나가지 않는다.
-                "GADApplicationIdentifier": "ca-app-pub-3940256099942544~1458002511",
+                // AdMob 콘솔에서 발급받은 실제 앱 ID. 앱 ID는 ~, 광고 단위는 /로 구분된다.
+                "GADApplicationIdentifier": "ca-app-pub-4602481899762111~4950998751",
                 "SKAdNetworkItems": .array(
                     skAdNetworkIdentifiers.map { .dictionary(["SKAdNetworkIdentifier": .string($0)]) }
                 ),
