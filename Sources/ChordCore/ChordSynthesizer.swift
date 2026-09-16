@@ -1,4 +1,5 @@
 import AVFoundation
+import ComposableArchitecture
 import Foundation
 
 /// 코드를 어떤 식으로 울릴지.
@@ -27,6 +28,8 @@ public enum PlaybackStyle: String, CaseIterable, Sendable, Hashable, Codable, Id
 
 /// 사운드폰트 없이 가산 합성으로 피아노에 가까운 소리를 만들어 재생한다.
 actor ChordSynthesizer {
+    @Dependency(\.crashReporter) private var crashReporter
+
     private let engine = AVAudioEngine()
     private let player = AVAudioPlayerNode()
     private let sampleRate: Double = 44100
@@ -48,6 +51,11 @@ actor ChordSynthesizer {
             player.play()
         } catch {
             // 오디오는 앱의 본질 기능이 아니므로, 실패해도 화면은 그대로 동작한다.
+            // 다만 소리가 안 나는 건 사용자가 바로 알아차리니 리포터에는 남긴다.
+            crashReporter.record(error, context: [
+                "midi_notes": midiNotes.map(String.init).joined(separator: ","),
+                "style": style.rawValue,
+            ])
             assertionFailure("코드 재생 실패: \(error)")
         }
     }

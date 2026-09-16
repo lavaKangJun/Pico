@@ -1,3 +1,4 @@
+import ChordCore
 import ComposableArchitecture
 import GoogleMobileAds
 import SwiftUI
@@ -46,6 +47,8 @@ public extension DependencyValues {
 private final class InterstitialPresenter: NSObject {
     static let shared = InterstitialPresenter()
 
+    @Dependency(\.crashReporter) private var crashReporter
+
     private var ad: InterstitialAd?
     /// 광고가 닫히기를 기다리는 쪽.
     private var dismissal: CheckedContinuation<Bool, Never>?
@@ -67,6 +70,9 @@ private final class InterstitialPresenter: NSObject {
         ad.fullScreenContentDelegate = self
         self.ad = nil
 
+        // 전면 광고가 떠 있는 동안 죽는 크래시가 제일 읽기 어렵다. 들고 난 자취를 남긴다.
+        crashReporter.log("전면 광고 표시")
+
         let watched = await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
             dismissal = continuation
             ad.present(from: root)
@@ -78,6 +84,7 @@ private final class InterstitialPresenter: NSObject {
     }
 
     private func finish(_ watched: Bool) {
+        crashReporter.log("전면 광고 종료 (끝까지 봄: \(watched))")
         dismissal?.resume(returning: watched)
         dismissal = nil
     }
@@ -88,7 +95,9 @@ extension InterstitialPresenter: FullScreenContentDelegate {
         finish(true)
     }
 
-    func ad(_: any FullScreenPresentingAd, didFailToPresentFullScreenContentWithError _: any Error) {
+    func ad(_: any FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: any Error) {
+        // 광고를 못 받는 건 흔한 일이지만, 받아 놓고 못 띄우는 건 비정상이라 남긴다.
+        crashReporter.record(error, context: ["ad_unit": AdMob.interstitialAdUnitID])
         finish(false)
     }
 }

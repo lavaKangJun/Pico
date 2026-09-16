@@ -4,15 +4,16 @@ import UIKit
 
 /// AdMob 설정값.
 public enum AdMob {
-    /// 배너 광고 단위 ID.
+    /// 배너 광고 단위 ID. AdMob 콘솔에서 발급받은 실제 단위다.
     ///
-    /// - Important: 지금 값은 구글이 공개한 **테스트 단위**다. 실제 광고와 수익이 나가려면
-    ///   AdMob 콘솔에서 발급받은 ID로 바꾸고, `Project.swift`의 `GADApplicationIdentifier`도
-    ///   같이 바꿔야 한다.
-    public static let bannerAdUnitID = "ca-app-pub-3940256099942544/2934735716"
+    /// - Important: 실제 단위라 이제 진짜 광고가 실린다. **자기 광고를 누르면 안 된다.**
+    ///   무효 트래픽으로 잡혀 수익 차감이나 계정 정지로 돌아온다. 시뮬레이터는 SDK가
+    ///   자동으로 테스트 기기로 취급하므로 안전하고, 실기기로 확인할 때는 AdMob 콘솔에
+    ///   테스트 기기를 먼저 등록한다.
+    public static let bannerAdUnitID = "ca-app-pub-4602481899762111/3854820761"
 
-    /// 전면 광고 단위 ID. 이것도 구글 테스트 단위다.
-    public static let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910"
+    /// 전면 광고 단위 ID. 배너와 마찬가지로 AdMob 콘솔에서 발급받은 실제 단위다.
+    public static let interstitialAdUnitID = "ca-app-pub-4602481899762111/8386936026"
 
     /// true면 6화음·7화음·텐션을 누를 때마다 전면 광고를 먼저 보여 준다.
     ///
