@@ -99,6 +99,35 @@
         }
       }
     },
+    "광고를 보면 %@ 분류를 열 수 있어요.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Watch an ad to unlock %@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "広告を見ると %@ が開きます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "观看广告即可解锁 %@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "觀看廣告即可解鎖 %@。"
+          }
+        }
+      }
+    },
     "기본": {
       "extractionState": "manual",
       "localizations": {
@@ -211,6 +240,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "八度"
+          }
+        }
+      }
+    },
+    "원하는 코드를 빠르게 찾아보세요": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find the chord you need, fast"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使いたいコードをすばやく探せます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速找到你需要的和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速找到你需要的和弦"
           }
         }
       }
@@ -443,35 +501,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "點按和弦即可查看組成音。"
-          }
-        }
-      }
-    },
-    "광고를 보면 %@ 분류를 열 수 있어요.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Watch an ad to unlock %@."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "広告を見ると %@ が開きます。"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "观看广告即可解锁 %@。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "觀看廣告即可解鎖 %@。"
           }
         }
       }

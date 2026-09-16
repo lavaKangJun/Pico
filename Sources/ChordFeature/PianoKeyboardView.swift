@@ -67,7 +67,7 @@ public struct PianoKeyboardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
+                .strokeBorder(KeyColor.border, lineWidth: 1)
         )
         .animation(.easeOut(duration: 0.18), value: highlightedSet)
     }
@@ -78,7 +78,7 @@ public struct PianoKeyboardView: View {
         let isOn = highlightedSet.contains(note)
         return ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(isOn ? color(for: note) : Color(.systemBackground))
+                .fill(isOn ? color(for: note) : KeyColor.white)
             if isOn {
                 Text(PitchClass(midiNote: note).name(preferringFlats: prefersFlats))
                     .font(.system(size: min(12, width * 0.42), weight: .semibold))
@@ -89,7 +89,7 @@ public struct PianoKeyboardView: View {
         .frame(width: width, height: height)
         .overlay(alignment: .trailing) {
             Rectangle()
-                .fill(Color.primary.opacity(0.14))
+                .fill(KeyColor.separator)
                 .frame(width: 1)
         }
         .contentShape(Rectangle())
@@ -100,7 +100,7 @@ public struct PianoKeyboardView: View {
         let isOn = highlightedSet.contains(note)
         return ZStack(alignment: .bottom) {
             RoundedRectangle(cornerRadius: 3, style: .continuous)
-                .fill(isOn ? color(for: note) : Color(red: 0.13, green: 0.13, blue: 0.15))
+                .fill(isOn ? color(for: note) : KeyColor.black)
             if isOn {
                 Text(PitchClass(midiNote: note).name(preferringFlats: prefersFlats))
                     // 흰 건반과 같은 크기. 좁은 건반에서 두 글자가 넘칠 때만 줄어든다.
@@ -120,6 +120,19 @@ public struct PianoKeyboardView: View {
     private func color(for note: Int) -> Color {
         PitchClass(midiNote: note) == rootPitch ? Theme.root : Theme.tone
     }
+}
+
+/// 건반 색은 밝기 모드를 따라가지 않는다.
+///
+/// 흰 건반에 `systemBackground`를 쓰면 다크 모드에서 검정이 되어, 검은 건반과 구분되지 않는다.
+/// 실제 피아노가 그렇듯 두 모드에서 같은 색으로 둔다.
+private enum KeyColor {
+    static let white = Color(red: 0.96, green: 0.96, blue: 0.97)
+    static let black = Color(red: 0.13, green: 0.13, blue: 0.15)
+    /// 흰 건반끼리 나누는 선.
+    static let separator = Color.black.opacity(0.16)
+    /// 건반 전체를 두르는 선.
+    static let border = Color.black.opacity(0.18)
 }
 
 #Preview {

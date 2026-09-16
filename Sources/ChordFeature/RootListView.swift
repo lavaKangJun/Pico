@@ -13,7 +13,10 @@ public struct RootListView: View {
     public var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             ScrollView {
-                LazyVStack(spacing: 12) {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    header
+                        .padding(.bottom, 4)
+
                     ForEach(PitchClass.allCases) { pitch in
                         NavigationLink(state: ChordFinderFeature.State(root: pitch.defaultNoteName)) {
                             row(for: pitch)
@@ -21,29 +24,38 @@ public struct RootListView: View {
                         .buttonStyle(CardButtonStyle())
                     }
                 }
-                .padding(16)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 24)
             }
-            .background(Theme.groupedBackground)
-            .navigationTitle(Text("코드 찾기", bundle: .chordFeature))
+            .background(Theme.listBackground.ignoresSafeArea())
+            // 큰 제목을 직접 그리므로 내비게이션 바는 접는다. 상세 화면은 자기 바를 따로 띄운다.
+            .toolbar(.hidden, for: .navigationBar)
         } destination: { store in
             ChordFinderView(store: store)
         }
     }
 
+    // MARK: - 머리말
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("코드 찾기", bundle: .chordFeature)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .foregroundStyle(.primary)
+
+            Text("원하는 코드를 빠르게 찾아보세요", bundle: .chordFeature)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 44)
+    }
+
+    // MARK: - 목록 한 줄
+
     private func row(for pitch: PitchClass) -> some View {
         HStack(spacing: 14) {
-            // 검은 건반은 C♯/D♭처럼 두 표기를 함께 적는다.
-            Text(pitch.combinedName)
-                .font(.system(.title3, design: .rounded).weight(.bold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-                .padding(.horizontal, 4)
-                .foregroundStyle(pitch.isAccidental ? Color.white : Theme.accent)
-                .frame(width: 58, height: 40)
-                .background(
-                    pitch.isAccidental ? Theme.accent : Theme.accent.opacity(0.12),
-                    in: RoundedRectangle(cornerRadius: 10, style: .continuous)
-                )
+            badge(for: pitch)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(pitch.combinedSolfege)
@@ -60,11 +72,23 @@ public struct RootListView: View {
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.tertiary)
         }
-        // cardStyle()의 16pt 대신 위아래만 좁혀 셀 높이를 낮춘다.
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
+        .glassBackground()
+    }
+
+    /// 루트마다 색이 다른 배지. 검은 건반은 C♯/D♭처럼 두 표기를 함께 적는다.
+    private func badge(for pitch: PitchClass) -> some View {
+        Text(pitch.combinedName)
+            .font(.system(size: 17, weight: .bold, design: .rounded))
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
+            .padding(.horizontal, 4)
+            .foregroundStyle(.white)
+            .frame(width: 58, height: 40)
+            .background(Theme.badge(for: pitch), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .shadow(color: Theme.badgeGlow(for: pitch), radius: 4, x: 0, y: 2)
     }
 }
 

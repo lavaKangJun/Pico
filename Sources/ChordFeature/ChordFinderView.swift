@@ -24,9 +24,11 @@ public struct ChordFinderView: View {
                 .padding(16)
             }
         }
-        .background(Theme.groupedBackground)
+        .background(Theme.listBackground.ignoresSafeArea())
         .navigationTitle(store.symbol)
         .navigationBarTitleDisplayMode(.inline)
+        // 바가 자기 배경을 그리면 그러데이션 위에 회색 띠가 얹힌다.
+        .toolbarBackground(.hidden, for: .navigationBar)
         .task { store.send(.viewAppeared) }
         // 크래시 로그에 "그때 무슨 코드를 보고 있었는지"를 함께 남긴다.
         // 리듀서에 부수효과를 들이지 않으려고 표시 계층에서 기록한다.
@@ -61,10 +63,16 @@ public struct ChordFinderView: View {
                             .frame(width: 62)
                             .padding(.vertical, 8)
                             .background(
-                                isSelected ? Theme.accent : Color(.tertiarySystemGroupedBackground),
+                                isSelected ? Theme.selectedChip : Theme.chipBackground,
                                 in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                             )
-                            .foregroundStyle(isSelected ? Color.white : Color.primary)
+                            .overlay {
+                                if isSelected {
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .strokeBorder(Theme.selectedChipBorder, lineWidth: 1)
+                                }
+                            }
+                            .foregroundStyle(isSelected ? Theme.accentOnSurface : Color.primary)
                         }
                         .buttonStyle(.plain)
                         .id(pitch)
@@ -80,9 +88,10 @@ public struct ChordFinderView: View {
                 }
             }
         }
-        .background(Theme.card)
         .overlay(alignment: .bottom) {
-            Divider()
+            Rectangle()
+                .fill(Theme.cardBorder)
+                .frame(height: 0.5)
         }
     }
 
@@ -223,6 +232,7 @@ public struct ChordFinderView: View {
                     Image(systemName: "minus")
                 }
                 .buttonStyle(.bordered)
+                .tint(Theme.accentOnSurface)
                 .disabled(!store.canLowerOctave)
 
                 Text("\(store.octave)")
@@ -235,6 +245,7 @@ public struct ChordFinderView: View {
                     Image(systemName: "plus")
                 }
                 .buttonStyle(.bordered)
+                .tint(Theme.accentOnSurface)
                 .disabled(!store.canRaiseOctave)
             }
         }
@@ -301,10 +312,16 @@ public struct ChordFinderView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
                         .background(
-                            isSelected ? Theme.accent : Color(.tertiarySystemGroupedBackground),
+                            isSelected ? Theme.selectedChip : Theme.chipBackground,
                             in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                         )
-                        .foregroundStyle(isSelected ? Color.white : Color.primary)
+                        .overlay {
+                            if isSelected {
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .strokeBorder(Theme.selectedChipBorder, lineWidth: 1)
+                            }
+                        }
+                        .foregroundStyle(isSelected ? Theme.accentOnSurface : Color.primary)
                     }
                     .buttonStyle(.plain)
                 }
