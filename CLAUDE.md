@@ -52,7 +52,7 @@ xcrun simctl io $SIM screenshot /tmp/shot.png
 ## 구조
 
 ```
-Sources/App/          진입점. 단일 Store를 들고 AdMob을 초기화한다
+Sources/App/          진입점. 단일 Store를 들고 Crashlytics와 AdMob을 초기화한다
 Sources/ChordFeature/ TCA 리듀서 + SwiftUI 뷰 + UI 문구 번역
 Sources/ChordCore/    음악 이론 도메인 + 오디오 + 음악 용어 번역
 ```
@@ -140,15 +140,23 @@ let store = TestStore(initialState: .init()) { Feature() } withDependencies: {
 
 ## 의존성
 
-TCA와 GoogleMobileAds 모두 **Xcode 네이티브 SPM**으로 붙인다. `Project.swift`의
+TCA와 GoogleMobileAds, Firebase 모두 **Xcode 네이티브 SPM**으로 붙인다. `Project.swift`의
 `packages:`에 선언하고 타깃에서 `.package(product:)`로 가져다 쓴다.
-해석 결과는 루트 `.package.resolved`에 남고 이 파일은 커밋한다.
+해석 결과는 루트 `.package.resolved`에 남고 이 파일은 커밋한다. `tuist generate`는
+워크스페이스 쪽에만 쓰므로, 패키지를 더하거나 뺀 뒤에는 루트 파일을 직접 맞춰 준다.
+
+```sh
+cp Pico.xcworkspace/xcshareddata/swiftpm/Package.resolved .package.resolved
+```
 
 Tuist의 SPM 통합(`Tuist/Package.swift` + `.external`)은 쓰지 않는다. 한 번 그렇게
 만들었다가 걷어냈다.
 
 GoogleMobileAds는 동적 프레임워크라 **ChordFeature와 앱 타깃 양쪽에서 링크**한다.
 정적 프레임워크는 동적 라이브러리를 품을 수 없어, 앱 타깃이 직접 링크해야 번들에 들어간다.
+
+FirebaseCrashlytics는 **앱 타깃에만** 링크한다. 크래시 수집은 UI도 도메인도 아닌 앱
+수명주기 인프라라 아래 모듈이 알 이유가 없다. 자세한 것은 "크래시 수집"에 적었다.
 
 ## 번역
 
@@ -194,24 +202,91 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 메인 액터가 아닌 곳에서 도니, 거기서 인스턴스를 만들면 실행 즉시 크래시한다.
 클로저 안에서 `.shared`로 처음 접근할 때 만들어지게 해 뒀다.
 
-### 배포 체크리스트
+## 크래시 수집
 
-지금 들어 있는 ID는 전부 구글이 공개한 테스트 값이다. 실제 배포 전에:
+Firebase Crashlytics를 쓴다. SDK는 **앱 타깃에만** 링크한다. `ChordCore`와 `ChordFeature`는
+Firebase를 모른다.
 
-1. `AdMob.bannerAdUnitID`와 `AdMob.interstitialAdUnitID`를 실제 광고 단위 ID로
-2. `Project.swift`의 `GADApplicationIdentifier`를 실제 앱 ID로
-3. `Project.swift`의 `SKAdNetworkItems`를 구글 문서의 전체 목록으로
-4. 개발자 웹사이트 루트에 `app-ads.txt`를 올리고 AdMob 콘솔에서 인식 확인
+`ChordCore`의 `CrashReporterClient`가 인터페이스고, 기본값(`liveValue`)은 아무것도 하지
+않는 `.noop`이다. 실제 구현 `.firebase`는 `Sources/App/CrashReporting.swift`에 있고
+앱을 켤 때 `prepareDependencies`로 갈아 끼운다. 그래서 테스트와 프리뷰는 의존성을
+바꾸지 않아도 조용하다.
 
-`app-ads.txt`는 "이 퍼블리셔 ID로 내 앱 인벤토리를 파는 건 나뿐"이라는 선언이다.
-없으면 누군가 광고 단위 ID를 자기 앱에 박아 가짜 노출을 만들어도 막을 방법이 없고,
-그 부정 트래픽이 내 계정에 적립돼 수익 차감이나 계정 정지로 돌아온다.
-앱스토어 등록 정보의 개발자 웹사이트와 도메인이 같아야 인식된다.
+```swift
+init() {
+    if CrashReporting.start() { prepareDependencies { $0.crashReporter = .firebase } }
+    AdMob.start()
+}
+```
 
-AdMob 앱 ID와 광고 단위 ID는 **비밀값이 아니다.** 구글 문서가 Info.plist와 코드에 그대로
-넣으라고 안내하는 공개 식별자다. 환경변수나 별도 설정 파일로 빼낼 이유가 없다.
-숨겨야 하는 건 AdMob 계정 자격증명, 리포팅 API 키, GCP 서비스 계정 JSON 쪽이고
-이 저장소에는 그런 것이 없다.
+- **순서가 중요하다.** 크래시 리포터가 AdMob보다 먼저 붙어야 SDK 초기화 중 크래시도 잡는다.
+- **`prepareDependencies`는 첫 읽기보다 먼저여야 한다.** 누가 먼저 `crashReporter`를 읽으면
+  `.noop`이 전역 캐시에 굳고, 그 뒤의 주입은 무시되며 런타임 경고만 뜬다. `PicoApp.init()`은
+  스토어도 뷰도 아직 없는 시점이라 여기가 안전한 자리다.
+- **`start()`가 false면 주입하지 않는다.** `FirebaseApp.configure()`가 안 돌았는데
+  `Crashlytics.crashlytics()`를 부르면 그 자리에서 죽는다. `GoogleService-Info.plist`가
+  없으면 경고만 남기고 `.noop`을 그대로 둔다 — 크래시 리포터가 없다고 앱이 죽는 건
+  앞뒤가 바뀐 얘기다.
+
+기록하는 곳은 세 군데다. 합성기 재생 실패(`ChordSynthesizer`), 전면 광고 present
+실패(`InterstitialPresenter`), 그리고 화면에 떠 있던 코드를 커스텀 키로(`ChordFinderView`).
+마지막 것을 리듀서가 아니라 뷰에 둔 이유는 리듀서에 부수효과를 들이지 않으려는 것이다.
+
+dSYM 업로드는 `Project.swift`의 포스트 스크립트가 맡는다. `runForInstallBuildsOnly`라
+아카이브할 때만 돈다. 이게 없으면 크래시 로그가 심볼 없는 주소값으로만 올라온다.
+
+알아 둘 것:
+
+- **디버거가 붙어 있으면 리포트가 안 올라간다.** 디버거가 크래시를 먼저 잡는다. 확인하려면
+  앱을 죽인 뒤 시뮬레이터나 기기에서 직접 다시 켜야 다음 실행 때 전송된다.
+- 실행하면 `NSUncaughtExceptionHandler is 'GADRegisterExceptionHandler'` 경고가 뜬다.
+  AdMob이 나중에 초기화되며 핸들러를 덮어써서 그렇다. 시그널 기반 크래시(Swift `fatalError`,
+  범위 초과, EXC_BAD_ACCESS)는 Crashlytics가 따로 잡으므로 영향이 없고, Objective-C
+  `NSException`만 AdMob 체인에 달린다. 순서를 뒤집으면 반대가 된다.
+
+## 배포 체크리스트
+
+### 끝난 것
+
+- 배너·전면 광고 단위 ID와 `GADApplicationIdentifier`가 실제 값이다
+- `SKAdNetworkItems`가 구글 공개 목록 전체다 (2026-01-30 기준 50개)
+- `AdMob.showsInterstitialForLockedCategories`가 `true`다
+- `app-ads.txt`를 https://lavakangjun.github.io/app-ads.txt 에 올렸다
+  (저장소는 `~/lavakangjun.github.io`, GitHub Pages 사용자 사이트)
+
+**이제 실제 광고 단위라 자기 광고를 누르면 안 된다.** 무효 트래픽으로 잡혀 수익 차감이나
+계정 정지로 돌아온다. 시뮬레이터는 SDK가 자동으로 테스트 기기로 잡아 주지만, 실기기로
+확인하려면 AdMob 콘솔에 테스트 기기를 먼저 등록한다.
+
+### 남은 것
+
+1. 앱스토어 등록 정보의 마케팅 URL을 `https://lavakangjun.github.io`로 적는다.
+   AdMob은 **스토어 등록 정보에 적힌 도메인**을 읽어 그 루트의 `app-ads.txt`를 크롤링하므로,
+   앱이 스토어에 올라가기 전에는 인증이 끝나지 않는다. 출시 후 콘솔에서 "인증됨" 확인
+   (최대 24시간). 하위 경로를 적어도 크롤러는 도메인 루트에서 찾는다.
+2. 개인정보 처리방침 페이지. 앱스토어 심사에 필요하고, AdMob과 Crashlytics가 데이터를
+   수집하므로 그 내용이 들어가야 한다. 홈페이지에 얹으면 된다.
+3. 홈페이지 `index.html`의 App Store 링크와 문의 이메일을 채운다. 둘 다 주석으로 표시해 뒀다.
+4. 첫 아카이브 뒤 Crashlytics 콘솔에 dSYM 누락 경고가 없는지 확인한다.
+
+`SKAdNetworkItems`는 중개 네트워크가 늘면 바뀐다. 앱을 올릴 때마다
+https://developers.google.com/admob/ios/3p-skadnetworks 와 맞춰 본다.
+
+### 알아 둘 것
+
+`app-ads.txt`는 "이 퍼블리셔 ID로 내 앱 인벤토리를 파는 건 나뿐"이라는 공개 선언이다.
+실제 효과는 두 가지다. 광고를 사는 쪽이 이 파일을 확인하므로 **없으면 입찰이 낮아지거나
+빠져 수익이 깎이고**, 남이 내 앱인 척 인벤토리를 파는 스푸핑을 구매자가 걸러낼 수 있다.
+(누군가 내 광고 단위 ID를 자기 앱에 박는 것은 다른 문제이고, 그쪽은 AdMob 콘솔의
+앱 확인 기능이 맡는다.)
+
+앱이 몇 개로 늘어도 파일은 그대로다. 적히는 것은 앱이 아니라 **퍼블리셔 ID 하나**라,
+같은 AdMob 계정의 앱들은 스토어 등록 정보에 같은 도메인만 적으면 전부 이 파일을 함께 쓴다.
+
+AdMob 앱 ID와 광고 단위 ID, `GoogleService-Info.plist`는 **비밀값이 아니다.** 앱 번들에
+실려 배포되므로 누구나 꺼낼 수 있고, 구글 문서도 코드에 그대로 넣으라고 안내한다.
+환경변수나 별도 설정 파일로 빼낼 이유가 없다. 숨겨야 하는 건 AdMob 계정 자격증명,
+리포팅 API 키, Firebase 서비스 계정 JSON 쪽이고 이 저장소에는 그런 것이 없다.
 
 ## 규칙
 
