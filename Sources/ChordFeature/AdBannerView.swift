@@ -1,3 +1,5 @@
+import ChordCore
+import ComposableArchitecture
 import GoogleMobileAds
 import SwiftUI
 import UIKit
@@ -115,6 +117,8 @@ private struct BannerRepresentable: UIViewRepresentable {
 
     @MainActor
     final class Coordinator: NSObject, BannerViewDelegate {
+        @Dependency(\.crashReporter) private var crashReporter
+
         var onLoad: (CGFloat) -> Void
         var onFailure: () -> Void
         /// 마지막으로 요청한 크기. 내려온 광고 크기와 헷갈리지 않으려고 따로 둔다.
@@ -134,6 +138,11 @@ private struct BannerRepresentable: UIViewRepresentable {
 
         func bannerView(_: BannerView, didFailToReceiveAdWithError _: any Error) {
             // 광고는 앱의 본질 기능이 아니므로, 못 받으면 빈 카드를 남기지 않고 자리를 접는다.
+            // 다만 왜 못 받았는지는 남긴다. 계정·단위 설정 문제와 단순 no fill을 구분해야 한다.
+            let reason = error.localizedDescription
+            // record가 아니라 log다. 배너 no fill은 흔한 일이라 비치명적 에러로 올리면
+            // 콘솔이 그걸로 도배돼 정작 봐야 할 것이 묻힌다. 크래시가 났을 때 함께 실리는
+            crashReporter.log("배너 실패: \(reason)")
             onFailure()
         }
     }
