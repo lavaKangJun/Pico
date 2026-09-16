@@ -1,3 +1,4 @@
+import ChordCore
 import ChordFeature
 import ComposableArchitecture
 import SwiftUI
@@ -14,6 +15,11 @@ struct PicoApp: App {
     }
 
     init() {
+        // 크래시 리포터가 제일 먼저다. 그래야 AdMob 초기화 중에 나는 크래시도 잡힌다.
+        // Firebase가 안 켜졌으면 no-op 기본값을 그대로 둔다. (Crashlytics를 부르면 죽는다)
+        if CrashReporting.start() {
+            prepareDependencies { $0.crashReporter = .firebase }
+        }
         AdMob.start()
     }
 

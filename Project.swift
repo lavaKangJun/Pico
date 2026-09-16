@@ -53,6 +53,31 @@ private func testTarget(
     )
 }
 
+// MARK: - 빌드 스크립트
+
+/// 아카이브할 때 dSYM을 Crashlytics로 올린다.
+///
+/// 이게 없으면 크래시 로그가 심볼 없는 주소값으로만 올라와 어디서 죽었는지 읽을 수 없다.
+/// `runForInstallBuildsOnly`라서 평소 디버그 빌드는 건드리지 않는다.
+private let crashlyticsSymbolUpload = TargetScript.post(
+    script: """
+    # SPM으로 붙인 Firebase는 체크아웃 경로가 빌드 디렉터리 안에 있다.
+    RUN_SCRIPT="${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run"
+    if [ -f "$RUN_SCRIPT" ]; then
+      "$RUN_SCRIPT"
+    else
+      echo "warning: Crashlytics run 스크립트를 찾지 못했다. dSYM이 올라가지 않는다."
+    fi
+    """,
+    name: "Upload Crashlytics dSYM",
+    inputPaths: [
+        "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+        "$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+    ],
+    basedOnDependencyAnalysis: false,
+    runForInstallBuildsOnly: true
+)
+
 // MARK: - 프로젝트
 
 let project = Project(
@@ -70,6 +95,10 @@ let project = Project(
         .remote(
             url: "https://github.com/googleads/swift-package-manager-google-mobile-ads",
             requirement: .upToNextMajor(from: "13.9.0")
+        ),
+        .remote(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            requirement: .upToNextMajor(from: "11.0.0")
         ),
     ],
     settings: .settings(base: baseSettings),
@@ -101,11 +130,16 @@ let project = Project(
             ]),
             sources: ["Sources/App/**"],
             resources: ["Resources/**"],
+            scripts: [crashlyticsSymbolUpload],
             dependencies: [
                 .target(name: "ChordFeature"),
+                // 크래시 리포터 의존성(CrashReporterClient)의 실제 구현이 앱 타깃에 있다.
+                .target(name: "ChordCore"),
                 // 정적 프레임워크는 동적 라이브러리를 품을 수 없으므로,
                 // 앱 타깃에서도 직접 링크해 번들에 들어가게 한다.
                 .package(product: "GoogleMobileAds"),
+                // Crashlytics는 UI도 도메인도 아닌 앱 수명주기 인프라라 앱 타깃에만 붙인다.
+                .package(product: "FirebaseCrashlytics"),
             ]
         ),
         module(

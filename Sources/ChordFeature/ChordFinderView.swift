@@ -5,6 +5,8 @@ import SwiftUI
 public struct ChordFinderView: View {
     @Bindable var store: StoreOf<ChordFinderFeature>
 
+    @Dependency(\.crashReporter) private var crashReporter
+
     public init(store: StoreOf<ChordFinderFeature>) {
         self.store = store
     }
@@ -26,6 +28,11 @@ public struct ChordFinderView: View {
         .navigationTitle(store.symbol)
         .navigationBarTitleDisplayMode(.inline)
         .task { store.send(.viewAppeared) }
+        // 크래시 로그에 "그때 무슨 코드를 보고 있었는지"를 함께 남긴다.
+        // 리듀서에 부수효과를 들이지 않으려고 표시 계층에서 기록한다.
+        .onChange(of: store.symbol, initial: true) { _, symbol in
+            crashReporter.setKey("chord", symbol)
+        }
     }
 
     // MARK: - 최상단 루트 스트립
