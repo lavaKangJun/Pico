@@ -229,7 +229,10 @@ public struct ChordFinderView: View {
                 Button {
                     store.send(.octaveStepped(-1))
                 } label: {
+                    // minus는 납작하고 plus는 정사각형이라, 글리프에 크기를 맡기면
+                    // 두 버튼 너비가 달라진다. 같은 프레임을 씌워 크기를 맞춘다.
                     Image(systemName: "minus")
+                        .frame(width: 22, height: 22)
                 }
                 .buttonStyle(.bordered)
                 .tint(Theme.accentOnSurface)
@@ -243,6 +246,7 @@ public struct ChordFinderView: View {
                     store.send(.octaveStepped(1))
                 } label: {
                     Image(systemName: "plus")
+                        .frame(width: 22, height: 22)
                 }
                 .buttonStyle(.bordered)
                 .tint(Theme.accentOnSurface)
