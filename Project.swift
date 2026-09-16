@@ -170,7 +170,7 @@ let project = Project(
             bundleId: bundleIDPrefix,
             deploymentTargets: deploymentTargets,
             infoPlist: .extendingDefault(with: [
-                "CFBundleDisplayName": "Pico",
+                "CFBundleDisplayName": "PICO",
                 "UILaunchScreen": ["UIColorName": ""],
                 "UIUserInterfaceStyle": "Automatic",
                 "UISupportedInterfaceOrientations": [
