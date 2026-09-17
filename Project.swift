@@ -6,6 +6,15 @@ private let bundleIDPrefix = "com.lavakangjun.pico"
 private let deploymentTargets: DeploymentTargets = .iOS("17.0")
 private let destinations: Destinations = [.iPhone, .iPad]
 
+/// 스토어에 보이는 버전. 기능이 바뀔 때 사람이 직접 올린다.
+private let marketingVersion = "1.0.0"
+
+/// 빌드 번호. `Scripts/release.sh`가 아카이브할 때마다 하나 올린다.
+///
+/// 같은 버전으로 여러 번 제출할 때 애플이 이 값으로 구분한다. 한 번 업로드한 번호는
+/// 다시 쓸 수 없으므로 되돌리지 않는다. 스크립트가 이 줄을 직접 고치니 형식을 바꾸지 않는다.
+private let buildNumber = "1"
+
 /// 한국어로 쓰고 영어·일본어·중국어(간체/번체)로 번역한다.
 private let developmentRegion = "ko"
 private let knownRegions = ["ko", "en", "ja", "zh-Hans", "zh-Hant"]
@@ -171,6 +180,8 @@ let project = Project(
             deploymentTargets: deploymentTargets,
             infoPlist: .extendingDefault(with: [
                 "CFBundleDisplayName": "PICO",
+                "CFBundleShortVersionString": .string(marketingVersion),
+                "CFBundleVersion": .string(buildNumber),
                 "UILaunchScreen": ["UIColorName": ""],
                 "UIUserInterfaceStyle": "Automatic",
                 "UISupportedInterfaceOrientations": [
