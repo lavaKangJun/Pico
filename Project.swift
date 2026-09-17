@@ -13,7 +13,7 @@ private let marketingVersion = "1.0.0"
 ///
 /// 같은 버전으로 여러 번 제출할 때 애플이 이 값으로 구분한다. 한 번 업로드한 번호는
 /// 다시 쓸 수 없으므로 되돌리지 않는다. 스크립트가 이 줄을 직접 고치니 형식을 바꾸지 않는다.
-private let buildNumber = "1"
+private let buildNumber = "2"
 
 /// 한국어로 쓰고 영어·일본어·중국어(간체/번체)로 번역한다.
 private let developmentRegion = "ko"
