@@ -193,6 +193,41 @@ localized("마이너 세븐스")               // 모델 (NSLocalizedString 래�
 내려온 크기로 바뀌어서, 비교할 때마다 "요청과 다르다 → 재요청"이 무한히 반복된다.
 요청한 크기는 코디네이터가 따로 들고 있다.
 
+### 광고 동의 (UMP)
+
+유럽·영국·스위스에 광고를 실으려면 구글이 인증한 동의 양식으로 동의를 받아야 한다. 동의
+흐름이 없으면 비개인화 광고조차 실리지 않아 그 지역 노출이 통째로 빠진다. `AdConsent`가
+그 흐름이고, `AdMob.start()`가 **동의를 받은 뒤에** SDK를 켠다. 광고 요청은 모두 지연돼
+있어(배너는 코드 찾기 화면, 전면 광고는 분류를 누를 때) 여기서 몇백 밀리초 늦어도 첫 광고를
+놓치지 않는다.
+
+`UserMessagingPlatform`은 GoogleMobileAds 패키지가 함께 들고 오므로 `Project.swift`에 따로
+선언하지 않는다.
+
+**코드만으로는 아무것도 뜨지 않는다.** AdMob 콘솔의 `개인정보 보호 및 메시지 → 유럽 규정`에서
+메시지를 만들고 **게시**해야 한다. 안 되어 있으면 로그에
+`no form(s) configured for the input app ID`가 찍힌다. 게시는 서버 설정이라 **앱을 다시
+빌드하지 않아도 적용된다.** 규제 대상 미국 주도 같은 구조다 (`미국 주 규정` 메시지).
+`IDFA 설명` 메시지는 만들지 않는다 — ATT를 요청하지 않는 앱이라 띄울 팝업이 없다.
+
+동의 양식이 "앱에서 동의를 관리하는 경로를 찾으라"고 안내하므로 그 경로가 실제로 있어야 한다.
+루트 목록 맨 아래의 "광고 개인정보 설정" 버튼이 그것이고, `privacyOptionsRequirementStatus`가
+`required`일 때만 그려서 그 밖의 지역에서는 화면이 지금과 똑같다. 루트 목록은 내비게이션 바를
+접어 두므로 툴바에 넣을 자리가 없어 목록 아래에 뒀다.
+
+미리 볼 때는 지역을 위장한다. 시뮬레이터는 UMP가 언제나 디버그 기기로 취급하므로 기기 ID를
+등록할 필요가 없다. 한 번 동의하면 다시 묻지 않으니, 이 스위치가 켜져 있으면 매번 `reset()`한다.
+
+```sh
+xcrun simctl launch $SIM com.lavakangjun.pico -PicoConsentGeography eea
+xcrun simctl launch $SIM com.lavakangjun.pico -PicoConsentGeography us
+```
+
+**동의를 거부하면 광고가 실리지 않고, 잠긴 분류도 열리지 않는다.** 광고를 끝까지 본 경우에만
+열어 주는 규칙(`interstitialFinished`의 `watched`)을 그대로 두기로 했다. 네트워크가 없거나
+노 필일 때도 같아서 아무 일도 일어나지 않는데, 화면에 이미 "광고를 보면 … 열 수 있어요"가
+적혀 있으니 따로 안내하지 않는다.
+
 **전면 광고** — 6화음·7화음·텐션 분류를 누를 때마다 (`InterstitialAdClient`).
 한 번 봤다고 열어 두지 않는다. 3화음만 광고 없이 오간다.
 `AdMob.showsInterstitialForLockedCategories`는 개발 중에 광고를 건너뛰려고 두는
