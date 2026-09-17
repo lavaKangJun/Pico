@@ -30,7 +30,13 @@ public enum AdMob {
         // 성인 지향 광고까지 실릴 수 있다. AdMob 콘솔에도 같은 제한이 있지만, 콘솔 설정이
         // 바뀌어도 앱이 스스로 지키도록 코드에 둔다.
         MobileAds.shared.requestConfiguration.maxAdContentRating = .general
-        MobileAds.shared.start()
+
+        // 동의를 받은 뒤에 SDK를 켠다. 유럽에서 동의 없이 광고를 요청하면 노출이 빠진다.
+        // 광고 요청은 모두 지연돼 있어(배너는 코드 찾기 화면, 전면 광고는 분류를 누를 때)
+        // 여기서 몇백 밀리초 늦어도 첫 광고를 놓치지 않는다.
+        AdConsent.gather {
+            MobileAds.shared.start()
+        }
     }
 }
 

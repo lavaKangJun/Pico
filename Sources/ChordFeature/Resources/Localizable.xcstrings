@@ -99,6 +99,35 @@
         }
       }
     },
+    "광고 개인정보 설정": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad privacy settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "広告のプライバシー設定"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "广告隐私设置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "廣告隱私設定"
+          }
+        }
+      }
+    },
     "광고를 보면 %@ 분류를 열 수 있어요.": {
       "extractionState": "manual",
       "localizations": {

@@ -23,6 +23,8 @@ public struct RootListView: View {
                         }
                         .buttonStyle(CardButtonStyle())
                     }
+
+                    privacyOptionsButton
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 24)
@@ -49,6 +51,25 @@ public struct RootListView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 44)
+    }
+
+    // MARK: - 광고 개인정보 설정
+
+    /// 유럽에서만 보인다. 동의 양식이 "앱에서 동의를 관리하는 경로를 찾으라"고 안내하므로
+    /// 그 경로가 실제로 있어야 한다. 그 밖의 지역에서는 아무것도 그리지 않는다.
+    @ViewBuilder
+    private var privacyOptionsButton: some View {
+        if AdConsent.Status.shared.isPrivacyOptionsRequired {
+            Button {
+                AdConsent.presentPrivacyOptions()
+            } label: {
+                Text("광고 개인정보 설정", bundle: .chordFeature)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 12)
+        }
     }
 
     // MARK: - 목록 한 줄
