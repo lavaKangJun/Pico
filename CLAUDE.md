@@ -251,6 +251,10 @@ dSYM 업로드는 `Project.swift`의 포스트 스크립트가 맡는다. `runFo
 - 배너·전면 광고 단위 ID와 `GADApplicationIdentifier`가 실제 값이다
 - `SKAdNetworkItems`가 구글 공개 목록 전체다 (2026-01-30 기준 50개)
 - `AdMob.showsInterstitialForLockedCategories`가 `true`다
+- 광고 콘텐츠 등급을 **G(전체 이용가)로 제한**했다. 연령 등급 4+에 맞추려면 필요하다.
+  코드(`AdMob.start()`의 `maxAdContentRating = .general`)와 AdMob 콘솔 양쪽에 걸어 뒀다.
+  둘 중 더 엄격한 쪽이 적용된다. 코드에 둔 이유는 콘솔 설정이 바뀌어도 앱이 스스로
+  지키게 하려는 것이고, 콘솔에 둔 이유는 중개 네트워크로 들어오는 광고까지 걸러야 해서다.
 - `app-ads.txt`를 https://lavakangjun.github.io/app-ads.txt 에 올렸다
   (저장소는 `~/lavakangjun.github.io`, GitHub Pages 사용자 사이트)
 
@@ -260,7 +264,7 @@ dSYM 업로드는 `Project.swift`의 포스트 스크립트가 맡는다. `runFo
 
 ### 남은 것
 
-1. 앱스토어 등록 정보의 마케팅 URL을 `https://lavakangjun.github.io`로 적는다.
+1. 앱스토어 등록 정보의 마케팅 URL을 `https://lavakangjun.github.io/pico/`로 적는다.
    AdMob은 **스토어 등록 정보에 적힌 도메인**을 읽어 그 루트의 `app-ads.txt`를 크롤링하므로,
    앱이 스토어에 올라가기 전에는 인증이 끝나지 않는다. 출시 후 콘솔에서 "인증됨" 확인
    (최대 24시간). 하위 경로를 적어도 크롤러는 도메인 루트에서 찾는다.

@@ -26,6 +26,10 @@ public enum AdMob {
     /// 앱을 켤 때 한 번 호출한다. 초기화 전에 요청한 광고는 로드되지 않는다.
     @MainActor
     public static func start() {
+        // 연령 등급 4+로 내는 앱이라 광고도 전체 이용가로 제한한다. 이걸 지정하지 않으면
+        // 성인 지향 광고까지 실릴 수 있다. AdMob 콘솔에도 같은 제한이 있지만, 콘솔 설정이
+        // 바뀌어도 앱이 스스로 지키도록 코드에 둔다.
+        MobileAds.shared.requestConfiguration.maxAdContentRating = .general
         MobileAds.shared.start()
     }
 }
@@ -136,7 +140,7 @@ private struct BannerRepresentable: UIViewRepresentable {
             onLoad(height)
         }
 
-        func bannerView(_: BannerView, didFailToReceiveAdWithError _: any Error) {
+        func bannerView(_: BannerView, didFailToReceiveAdWithError error: any Error) {
             // 광고는 앱의 본질 기능이 아니므로, 못 받으면 빈 카드를 남기지 않고 자리를 접는다.
             // 다만 왜 못 받았는지는 남긴다. 계정·단위 설정 문제와 단순 no fill을 구분해야 한다.
             let reason = error.localizedDescription
