@@ -21,7 +21,7 @@ public enum AdMob {
     ///
     /// 개발 중에 광고 없이 화면을 넘겨 보고 싶을 때 false로 내린다.
     /// 배포 빌드에서는 true여야 한다.
-    public static let showsInterstitialForLockedCategories = true
+    public static let showsInterstitialForLockedCategories = false//true
 
     /// 앱을 켤 때 한 번 호출한다. 초기화 전에 요청한 광고는 로드되지 않는다.
     @MainActor

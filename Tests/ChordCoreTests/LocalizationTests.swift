@@ -79,6 +79,7 @@ struct LocalizationTests {
     private func key(for category: ChordQuality.Category) -> String {
         switch category {
         case .triad: "3화음"
+        case .added: "애드"
         case .sixth: "6화음"
         case .seventh: "7화음"
         case .tension: "텐션"

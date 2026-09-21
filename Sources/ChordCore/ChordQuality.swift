@@ -30,6 +30,7 @@ public struct ChordQuality: Sendable, Hashable, Codable, Identifiable {
 
     public enum Category: String, CaseIterable, Sendable, Hashable, Codable, Identifiable {
         case triad
+        case added
         case sixth
         case seventh
         case tension
@@ -39,6 +40,7 @@ public struct ChordQuality: Sendable, Hashable, Codable, Identifiable {
         public var displayName: String {
             switch self {
             case .triad: localized("3화음")
+            case .added: localized("애드")
             case .sixth: localized("6화음")
             case .seventh: localized("7화음")
             case .tension: localized("텐션")
@@ -84,12 +86,21 @@ public extension ChordQuality {
     static let sus4 = ChordQuality(symbol: "sus4", displayName: "서스펜디드 4", category: .triad, intervals: [0, 5, 7])
     static let power = ChordQuality(symbol: "5", displayName: "파워 코드", category: .triad, intervals: [0, 7])
 
+    // 애드 — 3화음에 7음 없이 색만 하나 얹은 코드다. 그래서 6화음이 아니라 따로 묶었다.
+    //
+    // add2와 add9, add4와 add11은 같은 피치 클래스를 옥타브만 달리 얹은 것이다. 실제로
+    // 울리는 음이 달라 소리도 다르므로, 보이싱을 골라 들을 수 있게 따로 둔다.
+    static let addTwo = ChordQuality(symbol: "add2", displayName: "애드 투", category: .added, intervals: [0, 2, 4, 7])
+    static let minorAddTwo = ChordQuality(symbol: "madd2", displayName: "마이너 애드 투", category: .added, intervals: [0, 2, 3, 7])
+    static let addNine = ChordQuality(symbol: "add9", displayName: "애드 나인", category: .added, intervals: [0, 4, 7, 14])
+    static let minorAddNine = ChordQuality(symbol: "madd9", displayName: "마이너 애드 나인", category: .added, intervals: [0, 3, 7, 14])
+    static let addFour = ChordQuality(symbol: "add4", displayName: "애드 포", category: .added, intervals: [0, 4, 5, 7])
+    static let addEleven = ChordQuality(symbol: "add11", displayName: "애드 일레븐", category: .added, intervals: [0, 4, 7, 17])
+
     // 6화음
     static let sixth = ChordQuality(symbol: "6", displayName: "메이저 식스", category: .sixth, intervals: [0, 4, 7, 9])
     static let minorSixth = ChordQuality(symbol: "m6", displayName: "마이너 식스", category: .sixth, intervals: [0, 3, 7, 9])
     static let sixNine = ChordQuality(symbol: "6/9", displayName: "식스 나인", category: .sixth, intervals: [0, 4, 7, 9, 14])
-    static let addNine = ChordQuality(symbol: "add9", displayName: "애드 나인", category: .sixth, intervals: [0, 4, 7, 14])
-    static let minorAddNine = ChordQuality(symbol: "madd9", displayName: "마이너 애드 나인", category: .sixth, intervals: [0, 3, 7, 14])
 
     // 7화음
     static let dominantSeventh = ChordQuality(symbol: "7", displayName: "도미넌트 세븐스", category: .seventh, intervals: [0, 4, 7, 10])
@@ -114,7 +125,8 @@ public extension ChordQuality {
     /// 앱에서 고를 수 있는 전체 코드 성질.
     static let all: [ChordQuality] = [
         .major, .minor, .diminished, .augmented, .sus2, .sus4, .power,
-        .sixth, .minorSixth, .sixNine, .addNine, .minorAddNine,
+        .addTwo, .minorAddTwo, .addNine, .minorAddNine, .addFour, .addEleven,
+        .sixth, .minorSixth, .sixNine,
         .dominantSeventh, .majorSeventh, .minorSeventh, .minorMajorSeventh,
         .halfDiminished, .diminishedSeventh, .dominantSeventhSus4, .augmentedSeventh,
         .ninth, .majorNinth, .minorNinth, .eleventh, .thirteenth,

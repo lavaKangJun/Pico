@@ -132,7 +132,7 @@ let store = TestStore(initialState: .init()) { Feature() } withDependencies: {
     상세 화면의 표기 토글로 바꾼다. 표기를 바꿔도 소리는 그대로다.
   - 알려진 한계: 표기가 피치 클래스 기준이라 C♯ 메이저를 `C♯ F G♯`로 적는다.
     이론상 맞는 표기는 `C♯ E♯ G♯`다. 음이름을 글자(letter) 기준으로 다시 세우면 고칠 수 있다.
-- `ChordQuality` — 28가지 코드 성질을 반음 간격 배열로 정의. `nameKey`가 번역 키다.
+- `ChordQuality` — 32가지 코드 성질을 반음 간격 배열로 정의. `nameKey`가 번역 키다.
 - `Chord` — 루트 + 성질. 전위는 낮은 음부터 한 옥타브씩 올리는 방식이다.
 - `ChordProgression` — 으뜸음으로부터의 반음 거리로 정의해 어떤 조로든 이조된다.
 - `ChordSynthesizer` — 사운드폰트 없이 배음을 쌓아 PCM 버퍼를 만드는 actor.

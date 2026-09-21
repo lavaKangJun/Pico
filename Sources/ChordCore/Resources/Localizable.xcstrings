@@ -94,13 +94,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "6th chords"
+            "value": "6th"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "6thコード"
+            "value": "6th"
           }
         },
         "zh-Hans": {
@@ -123,13 +123,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "7th chords"
+            "value": "7th"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "7thコード"
+            "value": "7th"
           }
         },
         "zh-Hans": {
@@ -780,6 +780,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "小加九和弦"
+          }
+        }
+      }
+    },
+    "마이너 애드 투": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minor add 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイナー・アド2nd"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小加二和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小加二和弦"
           }
         }
       }
@@ -1567,6 +1596,35 @@
         }
       }
     },
+    "애드": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アド"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加音"
+          }
+        }
+      }
+    },
     "애드 나인": {
       "extractionState": "manual",
       "localizations": {
@@ -1592,6 +1650,93 @@
           "stringUnit": {
             "state": "translated",
             "value": "加九和弦"
+          }
+        }
+      }
+    },
+    "애드 일레븐": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add 11"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アドイレブンス"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加十一和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加十一和弦"
+          }
+        }
+      }
+    },
+    "애드 투": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アド2nd"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加二和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加二和弦"
+          }
+        }
+      }
+    },
+    "애드 포": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add 4"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アド4th"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加四和弦"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加四和弦"
           }
         }
       }
@@ -1834,13 +1979,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tensions"
+            "value": "Ext."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "テンション"
+            "value": "拡張"
           }
         },
         "zh-Hans": {
